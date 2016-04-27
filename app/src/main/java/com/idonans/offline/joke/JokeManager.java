@@ -89,6 +89,13 @@ public class JokeManager {
         startOffline();
     }
 
+    public long getOfflineJokesTime() {
+        if (mJokeOfflineInfo != null && mJokeOfflineInfo.hasContent()) {
+            return mJokeOfflineInfo.offlineTime;
+        }
+        return 0;
+    }
+
     public List<Data.Joke> getOfflineJokes() {
         if (mJokeOfflineInfo != null && mJokeOfflineInfo.hasContent()) {
             if (mOfflineJokes != null) {
@@ -122,6 +129,8 @@ public class JokeManager {
      */
     private void startOffline() {
         final String contentKeyLoading = UUID.randomUUID().toString();
+        CommonLog.d(TAG + " startOffline " + contentKeyLoading);
+
         mContentKeyLoading = contentKeyLoading;
         final Available finalAvailable = new Available() {
             @Override
