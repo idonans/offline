@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import com.idonans.acommon.App;
 import com.idonans.acommon.app.CommonActivity;
+import com.idonans.acommon.lang.CommonLog;
 import com.idonans.acommon.lang.Threads;
 import com.idonans.acommon.lang.WeakAvailable;
 import com.idonans.acommon.util.ViewUtil;
@@ -16,6 +17,8 @@ import com.idonans.offline.joke.JokeActivity;
  * Created by idonans on 16-4-27.
  */
 public class SplashActivity extends CommonActivity {
+
+    private static final String TAG = "SplashActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +32,7 @@ public class SplashActivity extends CommonActivity {
     }
 
     private void direct() {
+        CommonLog.d(TAG + " direct");
         Intent intent = new Intent(this, JokeActivity.class);
         startActivity(intent);
         finish();
@@ -44,9 +48,11 @@ public class SplashActivity extends CommonActivity {
 
         @Override
         public void run() {
+            CommonLog.d(TAG + " try sleep 3000 ms");
             Threads.sleepQuietly(3000);
 
             if (mSplashActivityAvailable.isAvailable()) {
+                CommonLog.d(TAG + " post to ui direct");
                 Threads.runOnUi(new Runnable() {
                     @Override
                     public void run() {
