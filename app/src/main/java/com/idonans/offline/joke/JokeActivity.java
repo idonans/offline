@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.idonans.acommon.app.CommonActivity;
+import com.idonans.acommon.util.DimenUtil;
 import com.idonans.acommon.util.ViewUtil;
 import com.idonans.offline.R;
 
@@ -79,6 +80,8 @@ public class JokeActivity extends CommonActivity {
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             TextView textView = new TextView(JokeActivity.this);
+            int padding = DimenUtil.dp2px(10);
+            textView.setPadding(padding, padding, padding, padding);
             return new JokeViewHolder(textView);
         }
 
