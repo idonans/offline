@@ -123,6 +123,11 @@ public class JokeManager {
         return true;
     }
 
+    private long getTime10Bit() {
+        // PHP 10 位时间戳
+        return Long.valueOf(String.valueOf(System.currentTimeMillis()).substring(0, 10));
+    }
+
     /**
      * 开始缓存新的内容
      */
@@ -137,7 +142,7 @@ public class JokeManager {
                 return contentKeyLoading.equals(mContentKeyLoading);
             }
         };
-        mJokeApiService.getLastestJokes(System.currentTimeMillis())
+        mJokeApiService.getLastestJokes(getTime10Bit())
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribe(new Observer<Data>() {
