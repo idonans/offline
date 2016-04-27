@@ -18,9 +18,8 @@ import java.util.concurrent.TimeUnit;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Query;
 import rx.Observable;
 import rx.Observer;
 import rx.schedulers.Schedulers;
@@ -286,8 +285,7 @@ public class JokeManager {
 
         // http://japi.juhe.cn/joke/content/list.from?key=您申请的KEY&page=2&pagesize=10&sort=asc&time=1418745237
         @GET("/joke/content/list.from?key=ac043f2d37f9b8cdadfbe16257d1c72e&page=1&pagesize=500&sort=desc")
-        @FormUrlEncoded
-        Observable<Data> getLastestJokes(@Field("time") long time);
+        Observable<Data> getLastestJokes(@Query("time") long time);
 
     }
 
