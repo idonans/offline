@@ -15,6 +15,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            app:contentInsetStart="0dp"
             app:layout_scrollFlags="scroll|enterAlways">
 
             <RelativeLayout
@@ -36,7 +37,10 @@
                         android:id="@+id/title"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+                        android:gravity="center_vertical"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"/>
                 </LinearLayout>
             </RelativeLayout>
         </android.support.v7.widget.Toolbar>
