@@ -63,6 +63,8 @@ public class FunctionsManager {
 
         void startOffline();
 
+        void cancel();
+
         void startActivity(Context context);
     }
 
@@ -91,6 +93,11 @@ public class FunctionsManager {
         @Override
         public void startOffline() {
             mJokeManager.offline(false);
+        }
+
+        @Override
+        public void cancel() {
+            mJokeManager.cancel();
         }
 
         @Override

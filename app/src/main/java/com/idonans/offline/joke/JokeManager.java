@@ -8,6 +8,7 @@ import com.google.gson.reflect.TypeToken;
 import com.idonans.acommon.data.StorageManager;
 import com.idonans.acommon.lang.Available;
 import com.idonans.acommon.lang.CommonLog;
+import com.idonans.acommon.lang.NotAvailableException;
 import com.idonans.offline.data.HttpManager;
 
 import java.lang.reflect.Type;
@@ -80,6 +81,13 @@ public class JokeManager {
         }
 
         startOffline();
+    }
+
+    /**
+     * 如果正在缓存，则取消
+     */
+    public void cancel() {
+        mContentKeyLoading = null;
     }
 
     /**
@@ -204,7 +212,7 @@ public class JokeManager {
                         boolean available = finalAvailable.isAvailable();
                         CommonLog.d(TAG + " offline onNext " + contentKeyLoading + ", " + available);
                         if (!available) {
-                            return;
+                            throw new NotAvailableException();
                         }
 
                         if (data != null
