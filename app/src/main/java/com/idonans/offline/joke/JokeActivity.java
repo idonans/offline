@@ -10,7 +10,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.idonans.acommon.app.CommonActivity;
-import com.idonans.acommon.util.DimenUtil;
 import com.idonans.acommon.util.ViewUtil;
 import com.idonans.offline.R;
 
@@ -97,15 +96,12 @@ public class JokeActivity extends CommonActivity {
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            TextView textView = new TextView(JokeActivity.this);
-            int padding = DimenUtil.dp2px(10);
-            textView.setPadding(padding, padding, padding, padding);
-            return new JokeViewHolder(textView);
+            return new JokeViewHolder(getLayoutInflater().inflate(R.layout.joke_activity_item, parent, false));
         }
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            ((JokeViewHolder) holder).bind(mOfflineJokes.get(position));
+            ((JokeViewHolder) holder).bind(mOfflineJokes.get(position), position);
         }
 
         @Override
@@ -118,17 +114,18 @@ public class JokeActivity extends CommonActivity {
 
         private TextView mContent;
 
-        public JokeViewHolder(TextView itemView) {
+        public JokeViewHolder(View itemView) {
             super(itemView);
-            mContent = itemView;
+            mContent = ViewUtil.findViewByID(itemView, R.id.text_content);
         }
 
-        public void bind(JokeManager.Data.Joke joke) {
+        public void bind(JokeManager.Data.Joke joke, int position) {
             if (joke == null) {
                 mContent.setText(null);
             } else {
                 mContent.setText(joke.content);
             }
+            itemView.setSelected(position % 2 == 0);
         }
 
     }
