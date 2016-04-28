@@ -1,5 +1,6 @@
 package com.idonans.offline.joke;
 
+import android.support.annotation.CheckResult;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
@@ -13,7 +14,6 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -78,16 +78,12 @@ public class JokeManager {
             return;
         }
 
-        if (mJokeOfflineInfo != null
-                && mJokeOfflineInfo.hasContent()
-                && !mJokeOfflineInfo.isTimeout()) {
-            // 缓存有内容并且没有过期，则不必开始新的缓存
-            return;
-        }
-
         startOffline();
     }
 
+    /**
+     * 上一次缓存成功的时间 ms
+     */
     public long getOfflineJokesTime() {
         if (mJokeOfflineInfo != null && mJokeOfflineInfo.hasContent()) {
             return mJokeOfflineInfo.offlineTime;
@@ -123,9 +119,11 @@ public class JokeManager {
         return true;
     }
 
-    private long getTime10Bit() {
-        // PHP 10 位时间戳
-        return Long.valueOf(String.valueOf(System.currentTimeMillis()).substring(0, 10));
+    /**
+     * 10 位时间戳, 精确到秒
+     */
+    private long getCurrentTimeSecond() {
+        return System.currentTimeMillis() / 1000;
     }
 
     /**
@@ -142,7 +140,19 @@ public class JokeManager {
                 return contentKeyLoading.equals(mContentKeyLoading);
             }
         };
-        mJokeApiService.getLastestJokes(getTime10Bit())
+        final long timeSecond = getCurrentTimeSecond();
+        final List<Data.Joke> finalJokes = new ArrayList<>();
+
+        mJokeApiService.getLastestJokes(timeSecond, 1)
+                .mergeWith(mJokeApiService.getLastestJokes(timeSecond, 2))
+                .mergeWith(mJokeApiService.getLastestJokes(timeSecond, 3))
+                .mergeWith(mJokeApiService.getLastestJokes(timeSecond, 4))
+                .mergeWith(mJokeApiService.getLastestJokes(timeSecond, 5))
+                .mergeWith(mJokeApiService.getLastestJokes(timeSecond, 6))
+                .mergeWith(mJokeApiService.getLastestJokes(timeSecond, 7))
+                .mergeWith(mJokeApiService.getLastestJokes(timeSecond, 8))
+                .mergeWith(mJokeApiService.getLastestJokes(timeSecond, 9))
+                .mergeWith(mJokeApiService.getLastestJokes(timeSecond, 10))
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribe(new Observer<Data>() {
@@ -150,6 +160,22 @@ public class JokeManager {
                     public void onCompleted() {
                         boolean available = finalAvailable.isAvailable();
                         CommonLog.d(TAG + " offline onCompleted " + contentKeyLoading + ", " + available);
+                        if (!available) {
+                            return;
+                        }
+
+                        if (!finalJokes.isEmpty()) {
+                            // save joke
+                            JokeOfflineInfo jokeOfflineInfo = saveOfflineJokes(contentKeyLoading, finalJokes);
+                            if (jokeOfflineInfo != null) {
+                                // 新的缓存成功保存，同步到内存
+                                mJokeOfflineInfo = jokeOfflineInfo;
+                                mOfflineJokes = finalJokes;
+                                return;
+                            }
+                        }
+
+                        mContentKeyLoading = null;
                     }
 
                     @Override
@@ -170,21 +196,18 @@ public class JokeManager {
                             return;
                         }
 
-                        if (data == null || data.error_code != 0) {
-                            mContentKeyLoading = null;
-                            return;
-                        }
-
-                        if (data.result != null && data.result.data != null && !data.result.data.isEmpty()) {
-                            // save joke
-                            JokeOfflineInfo jokeOfflineInfo = saveJokeOffline(mContentKeyLoading, data.result.data);
-                            if (jokeOfflineInfo != null) {
-                                // 新的缓存成功保存，同步到内存
-                                mJokeOfflineInfo = jokeOfflineInfo;
-                                mOfflineJokes = data.result.data;
+                        if (data != null
+                                && data.error_code == 0
+                                && data.result != null
+                                && data.result.data != null
+                                && !data.result.data.isEmpty()) {
+                            // merge joke
+                            for (Data.Joke joke : data.result.data) {
+                                if (joke != null && !TextUtils.isEmpty(joke.content)) {
+                                    finalJokes.add(joke);
+                                }
                             }
                         }
-                        mContentKeyLoading = null;
                     }
                 });
     }
@@ -225,7 +248,11 @@ public class JokeManager {
         return false;
     }
 
-    private static JokeOfflineInfo saveJokeOffline(String key, List<Data.Joke> jokes) {
+    /**
+     * 存储笑话内容到磁盘，如果存储成功，返回一个笑话内容信息的描述
+     */
+    @CheckResult
+    private static JokeOfflineInfo saveOfflineJokes(String key, List<Data.Joke> jokes) {
         if (TextUtils.isEmpty(key)) {
             key = UUID.randomUUID().toString();
         }
@@ -250,6 +277,10 @@ public class JokeManager {
         return null;
     }
 
+    /**
+     * 从磁盘中读取缓存的笑话内容
+     */
+    @CheckResult
     private static List<Data.Joke> restoreOfflineJokes(String key) {
         try {
             String json = StorageManager.getInstance().getCache(key);
@@ -277,20 +308,16 @@ public class JokeManager {
         public boolean hasContent() {
             return !TextUtils.isEmpty(contentKey);
         }
-
-        /**
-         * 上一次缓存的笑话是否已经过期
-         */
-        public boolean isTimeout() {
-            return System.currentTimeMillis() - offlineTime > TimeUnit.DAYS.toMillis(1);
-        }
     }
 
     public interface JokeApiService {
 
+        /**
+         * 十位的时间戳(精确到秒)，page 从 1 开始
+         */
         // http://japi.juhe.cn/joke/content/list.from?key=您申请的KEY&page=2&pagesize=10&sort=asc&time=1418745237
-        @GET("/joke/content/list.from?key=ac043f2d37f9b8cdadfbe16257d1c72e&page=1&pagesize=500&sort=desc")
-        Observable<Data> getLastestJokes(@Query("time") long time);
+        @GET("/joke/content/list.from?key=ac043f2d37f9b8cdadfbe16257d1c72e&pagesize=20&sort=desc")
+        Observable<Data> getLastestJokes(@Query("time") long time, @Query("page") int page);
 
     }
 
