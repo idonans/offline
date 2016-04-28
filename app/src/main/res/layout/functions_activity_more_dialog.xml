@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:padding="10dp">
+
+    <TextView
+        android:id="@+id/network_warn_tip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="当前正处于非 WIFI 环境下，下载数据可能产生流量费用。"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:id="@+id/network_warn_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:descendantFocusability="blocksDescendants"
+        android:minHeight="40dp"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:duplicateParentState="true"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:duplicateParentState="true"
+            android:text="本次使用移动网络下载"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/start_offline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:text="下载数据"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:padding="10dp"
+        android:text="关于"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="5dp"
+        android:text="https://github.com/idonans/offline"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="5dp"
+        android:text="idonans@126.com"/>
+
+    <android.support.v4.widget.Space
+        android:layout_width="match_parent"
+        android:layout_height="10dp"/>
+</LinearLayout>

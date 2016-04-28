@@ -54,6 +54,14 @@ public class FunctionsManager {
         mFunctions = functions;
     }
 
+    public void startOffline() {
+        if (mFunctions != null) {
+            for (Function function : mFunctions) {
+                function.startOffline();
+            }
+        }
+    }
+
     public interface Function {
         boolean isLoading();
 
