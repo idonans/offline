@@ -31,15 +31,14 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:scaleType="centerInside"/>
+                        android:scaleType="centerInside"
+                        android:src="@drawable/abc_ic_ab_back_mtrl_am_alpha"/>
 
                     <TextView
                         android:id="@+id/title"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
                         android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"/>
                 </LinearLayout>
             </RelativeLayout>
