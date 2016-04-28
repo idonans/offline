@@ -18,6 +18,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
+
 /**
  * 笑话
  * Created by idonans on 16-4-27.
@@ -26,6 +31,7 @@ public class JokeActivity extends CommonActivity {
 
     private TextView mTitle;
     private RecyclerView mRecyclerView;
+    private Subscription mSubscriptionShown;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,13 +66,25 @@ public class JokeActivity extends CommonActivity {
         String time = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date(offlineTime));
         mTitle.setText(time);
 
-        List<JokeManager.Data.Joke> offlineJokes = JokeManager.getInstance().getOfflineJokes();
-        if (offlineJokes == null || offlineJokes.isEmpty()) {
-            Toast.makeText(this, "暂无缓存", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        Subscription subscription = JokeManager.getInstance().getOfflineJokes()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<List<JokeManager.Data.Joke>>() {
+                    @Override
+                    public void call(List<JokeManager.Data.Joke> jokes) {
+                        if (jokes != null) {
+                            mRecyclerView.setAdapter(new JokesAdapter(jokes));
+                        }
+                    }
+                });
+        setSubscriptionShown(subscription);
+    }
 
-        mRecyclerView.setAdapter(new JokesAdapter(offlineJokes));
+    private void setSubscriptionShown(Subscription subscriptionShown) {
+        if (mSubscriptionShown != null) {
+            mSubscriptionShown.unsubscribe();
+        }
+        mSubscriptionShown = subscriptionShown;
     }
 
     private class JokesAdapter extends RecyclerView.Adapter {
@@ -118,6 +136,7 @@ public class JokeActivity extends CommonActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        setSubscriptionShown(null);
         JokeManager.getInstance().offline(false);
     }
 

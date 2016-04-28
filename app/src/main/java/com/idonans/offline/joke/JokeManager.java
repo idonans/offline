@@ -22,6 +22,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 import rx.Observable;
 import rx.Observer;
+import rx.Subscriber;
 import rx.schedulers.Schedulers;
 
 /**
@@ -91,19 +92,29 @@ public class JokeManager {
         return 0;
     }
 
-    public List<Data.Joke> getOfflineJokes() {
-        if (mJokeOfflineInfo != null && mJokeOfflineInfo.hasContent()) {
-            if (mOfflineJokes != null) {
-                return mOfflineJokes;
+    public Observable<List<Data.Joke>> getOfflineJokes() {
+        return Observable.create(new Observable.OnSubscribe<List<Data.Joke>>() {
+            @Override
+            public void call(Subscriber<? super List<Data.Joke>> subscriber) {
+                loadOfflineJokesToMemory();
+                subscriber.onNext(mOfflineJokes);
+                subscriber.onCompleted();
             }
+        });
+    }
 
-            List<Data.Joke> offlineJokes = restoreOfflineJokes(mJokeOfflineInfo.contentKey);
-            if (offlineJokes == null) {
-                offlineJokes = new ArrayList<>();
-            }
-            mOfflineJokes = offlineJokes;
+    private void loadOfflineJokesToMemory() {
+        if (mOfflineJokes != null) {
+            return;
         }
-        return mOfflineJokes;
+        List<Data.Joke> offlineJokes = null;
+        if (mJokeOfflineInfo != null && mJokeOfflineInfo.hasContent()) {
+            offlineJokes = restoreOfflineJokes(mJokeOfflineInfo.contentKey);
+        }
+        if (offlineJokes == null) {
+            offlineJokes = new ArrayList<>();
+        }
+        mOfflineJokes = offlineJokes;
     }
 
     /**
