@@ -62,6 +62,17 @@ public class FunctionsManager {
         }
     }
 
+    public boolean isLoading() {
+        if (mFunctions != null) {
+            for (Function function : mFunctions) {
+                if (function.isLoading()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public interface Function {
         boolean isLoading();
 

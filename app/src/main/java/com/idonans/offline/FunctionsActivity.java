@@ -16,6 +16,9 @@ import android.widget.TextView;
 
 import com.idonans.acommon.app.CommonActivity;
 import com.idonans.acommon.lang.CommonLog;
+import com.idonans.acommon.lang.TaskQueue;
+import com.idonans.acommon.lang.Threads;
+import com.idonans.acommon.lang.WeakAvailable;
 import com.idonans.acommon.util.ViewUtil;
 
 import java.util.List;
@@ -36,6 +39,8 @@ public class FunctionsActivity extends CommonActivity {
     private TextView mTitle;
     private TextView mOfflineProgress;
     private ImageView mMore;
+
+    private final TaskQueue mOfflineProgressSyncQueue = new TaskQueue(1);
 
     private RecyclerView mRecyclerView;
     private Subscription mSubscriptionShown;
@@ -80,23 +85,75 @@ public class FunctionsActivity extends CommonActivity {
         setSubscriptionShown(subscription);
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
-        bindOfflineProgress();
+        syncOfflineProgress();
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        unbindOfflineProgress();
+    private OfflineProgressTask mOfflineProgressTask;
+
+    private void syncOfflineProgress() {
+        mOfflineProgressTask = new OfflineProgressTask(this) {
+            @Override
+            public boolean isAvailable() {
+                return mOfflineProgressTask == this && super.isAvailable();
+            }
+        };
+        mOfflineProgressSyncQueue.enqueue(mOfflineProgressTask);
     }
 
-    private void bindOfflineProgress() {
+    private static class OfflineProgressTask extends WeakAvailable implements Runnable {
 
-    }
+        private boolean mFirst = true;
 
-    private void unbindOfflineProgress() {
+        public OfflineProgressTask(FunctionsActivity functionsActivity) {
+            super(functionsActivity);
+        }
+
+        @Override
+        public void run() {
+            Threads.mustNotUi();
+
+            // 第一次时不做延迟
+            if (!mFirst) {
+                Threads.sleepQuietly(2000);
+            }
+            mFirst = false;
+
+            final boolean loading = FunctionsManager.getInstance().isLoading();
+
+            FunctionsActivity functionsActivity = (FunctionsActivity) getObject();
+            if (!isAvailable()) {
+                return;
+            }
+            if (functionsActivity.isPaused()) {
+                return;
+            }
+
+            functionsActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    FunctionsActivity functionsActivity = (FunctionsActivity) getObject();
+                    if (!isAvailable()) {
+                        return;
+                    }
+                    if (functionsActivity.isPaused()) {
+                        return;
+                    }
+
+                    if (loading) {
+                        functionsActivity.mOfflineProgress.setText("(下载中)");
+                    } else {
+                        functionsActivity.mOfflineProgress.setText(null);
+                    }
+
+                    // 开始下一次循环
+                    functionsActivity.mOfflineProgressSyncQueue.enqueue(OfflineProgressTask.this);
+                }
+            });
+        }
 
     }
 
