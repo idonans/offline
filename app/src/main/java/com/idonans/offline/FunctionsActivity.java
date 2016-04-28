@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.idonans.acommon.app.CommonActivity;
+import com.idonans.acommon.lang.CommonLog;
 import com.idonans.acommon.util.ViewUtil;
 
 import java.util.List;
@@ -177,6 +178,7 @@ public class FunctionsActivity extends CommonActivity {
                 if (networkWarnTip == null
                         || networkWarnConfirm == null
                         || startOffline == null) {
+                    CommonLog.d(TAG + " more dialog init fail");
                     return;
                 }
 
