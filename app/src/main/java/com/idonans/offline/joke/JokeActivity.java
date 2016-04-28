@@ -13,8 +13,6 @@ import com.idonans.acommon.app.CommonActivity;
 import com.idonans.acommon.util.ViewUtil;
 import com.idonans.offline.R;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import rx.Subscription;
@@ -46,7 +44,7 @@ public class JokeActivity extends CommonActivity {
             }
         });
         mTitle = ViewUtil.findViewByID(backPanel, R.id.title);
-        mTitle.setText("笑话");
+        mTitle.setText("就是一个笑话");
 
         mRecyclerView = ViewUtil.findViewByID(this, R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -57,13 +55,9 @@ public class JokeActivity extends CommonActivity {
     private void showOfflineJokes() {
         long offlineTime = JokeManager.getInstance().getOfflineJokesTime();
         if (offlineTime <= 0) {
-            mTitle.setText("笑话");
             Toast.makeText(this, "暂无缓存", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        String time = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date(offlineTime));
-        mTitle.setText(time);
 
         Subscription subscription = JokeManager.getInstance().getOfflineJokes()
                 .subscribeOn(Schedulers.io())
@@ -125,7 +119,7 @@ public class JokeActivity extends CommonActivity {
             } else {
                 mContent.setText(joke.content);
             }
-            itemView.setSelected(position % 2 == 0);
+            itemView.setSelected(position % 2 != 0);
         }
 
     }
