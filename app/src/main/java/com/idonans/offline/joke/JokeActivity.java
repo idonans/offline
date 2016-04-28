@@ -43,7 +43,7 @@ public class JokeActivity extends CommonActivity {
                 onBackPressed();
             }
         });
-        mTitle = ViewUtil.findViewByID(backPanel, R.id.title);
+        mTitle = ViewUtil.findViewByID(backPanel, R.id.view_title);
         mTitle.setText("就是一个笑话");
 
         mRecyclerView = ViewUtil.findViewByID(this, R.id.recycler_view);

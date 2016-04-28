@@ -51,7 +51,7 @@ public class FunctionsActivity extends CommonActivity {
         setContentView(R.layout.functions_activity);
 
         final Toolbar toolbar = ViewUtil.findViewByID(this, R.id.toolbar);
-        mTitle = ViewUtil.findViewByID(toolbar, R.id.title);
+        mTitle = ViewUtil.findViewByID(toolbar, R.id.view_title);
         mTitle.setText("离线阅读");
 
         mOfflineProgress = ViewUtil.findViewByID(toolbar, R.id.offline_progress);
@@ -114,6 +114,7 @@ public class FunctionsActivity extends CommonActivity {
 
         @Override
         public void run() {
+            CommonLog.d(TAG + " OfflineProgressTask run @" + hashCode());
             Threads.mustNotUi();
 
             // 第一次时不做延迟
