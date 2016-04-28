@@ -17,6 +17,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name="com.idonans.offline.FunctionsActivity"/>
         <activity android:name="com.idonans.offline.joke.JokeActivity"/>
     </application>
 

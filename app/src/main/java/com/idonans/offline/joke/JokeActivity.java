@@ -134,7 +134,6 @@ public class JokeActivity extends CommonActivity {
     protected void onDestroy() {
         super.onDestroy();
         setSubscriptionShown(null);
-        JokeManager.getInstance().offline(false);
     }
 
 }

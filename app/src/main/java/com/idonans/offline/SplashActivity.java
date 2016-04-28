@@ -10,7 +10,6 @@ import com.idonans.acommon.lang.CommonLog;
 import com.idonans.acommon.lang.Threads;
 import com.idonans.acommon.lang.WeakAvailable;
 import com.idonans.acommon.util.ViewUtil;
-import com.idonans.offline.joke.JokeActivity;
 
 /**
  * 启动页
@@ -33,7 +32,7 @@ public class SplashActivity extends CommonActivity {
 
     private void direct() {
         CommonLog.d(TAG + " direct");
-        Intent intent = new Intent(this, JokeActivity.class);
+        Intent intent = new Intent(this, FunctionsActivity.class);
         startActivity(intent);
         finish();
     }
