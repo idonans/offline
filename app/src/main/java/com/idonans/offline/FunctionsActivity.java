@@ -189,12 +189,12 @@ public class FunctionsActivity extends CommonActivity {
     private class FunctionsItemDivider extends RecyclerView.ItemDecoration {
 
         private final Paint mPaintDivider;
-        private final int mDP10;
+        private final int mEmptyArea;
 
         private FunctionsItemDivider() {
             mPaintDivider = new Paint();
             mPaintDivider.setColor(Color.DKGRAY);
-            mDP10 = DimenUtil.dp2px(10);
+            mEmptyArea = DimenUtil.dp2px(20);
         }
 
         @Override
@@ -204,11 +204,11 @@ public class FunctionsActivity extends CommonActivity {
 
             int position = parent.getChildAdapterPosition(view);
             if (position == 0) {
-                outRect.top = mDP10;
+                outRect.top = mEmptyArea;
             }
 
             if (position == count - 1) {
-                outRect.bottom = mDP10;
+                outRect.bottom = mEmptyArea;
             } else {
                 outRect.bottom = 1;
             }
