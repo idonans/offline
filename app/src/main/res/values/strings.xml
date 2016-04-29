@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">离线阅读</string>
 
-    <string name="splash_tip">WIFI 缓存\n离线阅读</string>
+    <string name="splash_tip">手动缓存\n离线阅读</string>
 </resources>
