@@ -49,7 +49,8 @@
                     android:layout_alignParentRight="true"
                     android:minWidth="36dp"
                     android:scaleType="centerInside"
-                    android:src="@drawable/abc_ic_menu_moreoverflow_mtrl_alpha"/>
+                    android:src="@drawable/abc_ic_menu_moreoverflow_mtrl_alpha"
+                    android:tint="@color/material_grey_50"/>
             </RelativeLayout>
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
