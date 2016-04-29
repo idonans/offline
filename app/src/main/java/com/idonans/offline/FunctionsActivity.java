@@ -2,6 +2,10 @@ package com.idonans.offline;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v4.net.ConnectivityManagerCompat;
@@ -20,6 +24,7 @@ import com.idonans.acommon.lang.CommonLog;
 import com.idonans.acommon.lang.TaskQueue;
 import com.idonans.acommon.lang.Threads;
 import com.idonans.acommon.lang.WeakAvailable;
+import com.idonans.acommon.util.DimenUtil;
 import com.idonans.acommon.util.ViewUtil;
 
 import java.util.List;
@@ -71,6 +76,7 @@ public class FunctionsActivity extends CommonActivity {
 
         mRecyclerView = ViewUtil.findViewByID(mRefreshLayout, R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        mRecyclerView.addItemDecoration(new FunctionsItemDivider());
 
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -176,6 +182,49 @@ public class FunctionsActivity extends CommonActivity {
                     functionsActivity.mOfflineProgressSyncQueue.enqueue(OfflineProgressTask.this);
                 }
             });
+        }
+
+    }
+
+    private class FunctionsItemDivider extends RecyclerView.ItemDecoration {
+
+        private final Paint mPaint;
+        private final int mDp1;
+
+        private FunctionsItemDivider() {
+            mPaint = new Paint();
+            mPaint.setColor(Color.DKGRAY);
+            mDp1 = DimenUtil.dp2px(1);
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            int count = parent.getAdapter().getItemCount();
+
+            if (count <= 1) {
+                return;
+            }
+
+            int position = parent.getChildAdapterPosition(view);
+            if (position != count - 1) {
+                outRect.set(0, 0, 0, mDp1);
+            }
+        }
+
+        @Override
+        public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+            LinearLayoutManager layoutManager = (LinearLayoutManager) parent.getLayoutManager();
+            int lastPosition = layoutManager.findLastVisibleItemPosition();
+            if (lastPosition <= 0) {
+                return;
+            }
+
+            View lastView = layoutManager.findViewByPosition(lastPosition);
+            if (lastView == null) {
+                return;
+            }
+
+            c.drawRect(0, 0, parent.getWidth(), lastView.getBottom(), mPaint);
         }
 
     }

@@ -50,6 +50,10 @@ public class FunctionsManager {
 
         List<Function> functions = new ArrayList<>();
         functions.add(new JokeFunction());
+        functions.add(new JokeFunction());
+        functions.add(new JokeFunction());
+        functions.add(new JokeFunction());
+        functions.add(new JokeFunction());
 
         mFunctions = functions;
     }
