@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/material_grey_50"
     android:padding="10dp"
     tools:context="com.idonans.offline.SplashActivity">
 
@@ -14,12 +15,15 @@
         android:layout_centerInParent="true"
         android:gravity="center"
         android:text="@string/splash_tip"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
+        android:textColor="@color/material_grey_900"
+        android:textSize="@dimen/abc_text_size_large_material"/>
 
     <TextView
         android:id="@+id/version_desc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:gravity="right"/>
+        android:gravity="right"
+        android:textColor="@color/material_grey_900"
+        android:textSize="@dimen/abc_text_size_small_material"/>
 </RelativeLayout>
