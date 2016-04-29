@@ -23,6 +23,7 @@ import com.idonans.acommon.lang.WeakAvailable;
 import com.idonans.acommon.util.ViewUtil;
 
 import java.util.List;
+import java.util.Locale;
 
 import rx.Observer;
 import rx.Subscription;
@@ -206,14 +207,33 @@ public class FunctionsActivity extends CommonActivity {
     private class FunctionViewHolder extends RecyclerView.ViewHolder {
 
         private TextView mFunctionTitle;
+        private TextView mFunctionOfflineTime;
 
         public FunctionViewHolder(View itemView) {
             super(itemView);
             mFunctionTitle = ViewUtil.findViewByID(itemView, R.id.function_title);
+            mFunctionOfflineTime = ViewUtil.findViewByID(itemView, R.id.function_offline_time);
         }
 
         public void bind(final FunctionsManager.Function function, int position) {
             mFunctionTitle.setText(function.getTitle());
+
+            StringBuilder offlineTimeBuffer = new StringBuilder();
+            long offlineTime = function.getOfflineTime();
+            boolean loading = function.isLoading();
+            if (offlineTime > 0) {
+                offlineTimeBuffer.append(String.format(Locale.SIMPLIFIED_CHINESE, "上次更新：%tF %tR", offlineTime, offlineTime));
+                if (loading) {
+                    offlineTimeBuffer.append(" [正在更新]");
+                }
+            } else {
+                if (loading) {
+                    offlineTimeBuffer.append("[正在更新]");
+                } else {
+                    offlineTimeBuffer.append("无更新记录");
+                }
+            }
+            mFunctionOfflineTime.setText(offlineTimeBuffer);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
