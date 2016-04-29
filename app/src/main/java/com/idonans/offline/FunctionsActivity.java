@@ -24,6 +24,7 @@ import com.idonans.acommon.lang.CommonLog;
 import com.idonans.acommon.lang.TaskQueue;
 import com.idonans.acommon.lang.Threads;
 import com.idonans.acommon.lang.WeakAvailable;
+import com.idonans.acommon.util.DimenUtil;
 import com.idonans.acommon.util.ViewUtil;
 
 import java.util.List;
@@ -187,41 +188,49 @@ public class FunctionsActivity extends CommonActivity {
 
     private class FunctionsItemDivider extends RecyclerView.ItemDecoration {
 
-        private final Paint mPaint;
+        private final Paint mPaintDivider;
+        private final int mDP10;
 
         private FunctionsItemDivider() {
-            mPaint = new Paint();
-            mPaint.setColor(Color.DKGRAY);
+            mPaintDivider = new Paint();
+            mPaintDivider.setColor(Color.DKGRAY);
+            mDP10 = DimenUtil.dp2px(10);
         }
 
         @Override
         public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            // 第一个前面和最后一个后面有一定的空白区域, 每个之间有空白区域
             int count = parent.getAdapter().getItemCount();
 
-            if (count <= 1) {
-                return;
+            int position = parent.getChildAdapterPosition(view);
+            if (position == 0) {
+                outRect.top = mDP10;
             }
 
-            int position = parent.getChildAdapterPosition(view);
-            if (position != count - 1) {
-                outRect.set(0, 0, 0, 1);
+            if (position == count - 1) {
+                outRect.bottom = mDP10;
+            } else {
+                outRect.bottom = 1;
             }
         }
 
         @Override
         public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
             LinearLayoutManager layoutManager = (LinearLayoutManager) parent.getLayoutManager();
+            int firstPosition = layoutManager.findFirstVisibleItemPosition();
             int lastPosition = layoutManager.findLastVisibleItemPosition();
-            if (lastPosition <= 0) {
+
+            if (firstPosition < 0 || lastPosition < 0 || firstPosition == lastPosition) {
                 return;
             }
 
+            View firstView = layoutManager.findViewByPosition(firstPosition);
             View lastView = layoutManager.findViewByPosition(lastPosition);
-            if (lastView == null) {
+            if (firstView == null || lastView == null) {
                 return;
             }
 
-            c.drawRect(0, 0, parent.getWidth(), lastView.getBottom(), mPaint);
+            c.drawRect(0, firstView.getTop(), parent.getWidth(), lastView.getBottom(), mPaintDivider);
         }
 
     }
