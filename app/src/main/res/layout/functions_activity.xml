@@ -15,6 +15,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            android:background="@color/material_grey_900"
             app:contentInsetStart="0dp"
             app:layout_scrollFlags="scroll|enterAlways">
 
@@ -29,7 +30,8 @@
                     android:gravity="center_vertical"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
-                    android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"/>
+                    android:textColor="@color/material_grey_50"
+                    android:textSize="@dimen/abc_text_size_title_material_toolbar"/>
 
                 <TextView
                     android:id="@+id/offline_progress"
@@ -37,7 +39,8 @@
                     android:layout_height="match_parent"
                     android:layout_toRightOf="@id/view_title"
                     android:gravity="center_vertical"
-                    android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle"/>
+                    android:textColor="@color/material_grey_300"
+                    android:textSize="@dimen/abc_text_size_subtitle_material_toolbar"/>
 
                 <ImageView
                     android:id="@+id/more"
