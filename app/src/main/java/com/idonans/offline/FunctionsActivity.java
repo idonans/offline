@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v4.net.ConnectivityManagerCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,9 +24,9 @@ import com.idonans.acommon.util.ViewUtil;
 
 import java.util.List;
 
+import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -42,6 +43,7 @@ public class FunctionsActivity extends CommonActivity {
 
     private final TaskQueue mOfflineProgressSyncQueue = new TaskQueue(1);
 
+    private SwipeRefreshLayout mRefreshLayout;
     private RecyclerView mRecyclerView;
     private Subscription mSubscriptionShown;
 
@@ -64,8 +66,17 @@ public class FunctionsActivity extends CommonActivity {
             }
         });
 
-        mRecyclerView = ViewUtil.findViewByID(this, R.id.recycler_view);
+        mRefreshLayout = ViewUtil.findViewByID(this, R.id.refresh_layout);
+
+        mRecyclerView = ViewUtil.findViewByID(mRefreshLayout, R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+
+        mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                showFunctions();
+            }
+        });
 
         showFunctions();
     }
@@ -74,9 +85,19 @@ public class FunctionsActivity extends CommonActivity {
         Subscription subscription = FunctionsManager.getInstance().getFunctions()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<List<FunctionsManager.Function>>() {
+                .subscribe(new Observer<List<FunctionsManager.Function>>() {
                     @Override
-                    public void call(List<FunctionsManager.Function> functions) {
+                    public void onCompleted() {
+                        mRefreshLayout.setRefreshing(false);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        mRefreshLayout.setRefreshing(false);
+                    }
+
+                    @Override
+                    public void onNext(List<FunctionsManager.Function> functions) {
                         if (functions != null) {
                             mRecyclerView.setAdapter(new FunctionsAdapter(functions));
                         }
