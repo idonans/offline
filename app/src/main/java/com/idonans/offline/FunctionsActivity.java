@@ -24,7 +24,6 @@ import com.idonans.acommon.lang.CommonLog;
 import com.idonans.acommon.lang.TaskQueue;
 import com.idonans.acommon.lang.Threads;
 import com.idonans.acommon.lang.WeakAvailable;
-import com.idonans.acommon.util.DimenUtil;
 import com.idonans.acommon.util.ViewUtil;
 
 import java.util.List;
@@ -189,12 +188,10 @@ public class FunctionsActivity extends CommonActivity {
     private class FunctionsItemDivider extends RecyclerView.ItemDecoration {
 
         private final Paint mPaint;
-        private final int mDp1;
 
         private FunctionsItemDivider() {
             mPaint = new Paint();
             mPaint.setColor(Color.DKGRAY);
-            mDp1 = DimenUtil.dp2px(1);
         }
 
         @Override
@@ -207,7 +204,7 @@ public class FunctionsActivity extends CommonActivity {
 
             int position = parent.getChildAdapterPosition(view);
             if (position != count - 1) {
-                outRect.set(0, 0, 0, mDp1);
+                outRect.set(0, 0, 0, 1);
             }
         }
 
