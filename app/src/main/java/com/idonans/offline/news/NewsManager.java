@@ -4,7 +4,7 @@ import android.text.TextUtils;
 
 import com.idonans.acommon.lang.Available;
 import com.idonans.acommon.lang.CommonLog;
-import com.idonans.acommon.lang.NotAvailableException;
+import com.idonans.acommon.util.AvailableUtil;
 import com.idonans.offline.data.HttpManager;
 
 import java.util.List;
@@ -163,9 +163,7 @@ public class NewsManager {
                     public void onNext(NewsList newsList) {
                         boolean available = finalAvailable.isAvailable();
                         CommonLog.d(TAG + " offline onNext " + contentKeyLoading + ", " + available);
-                        if (!available) {
-                            throw new NotAvailableException();
-                        }
+                        AvailableUtil.mustAvailable(finalAvailable);
 
                         if (newsList != null
                                 && newsList.status

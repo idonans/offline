@@ -8,7 +8,7 @@ import com.google.gson.reflect.TypeToken;
 import com.idonans.acommon.data.StorageManager;
 import com.idonans.acommon.lang.Available;
 import com.idonans.acommon.lang.CommonLog;
-import com.idonans.acommon.lang.NotAvailableException;
+import com.idonans.acommon.util.AvailableUtil;
 import com.idonans.offline.data.HttpManager;
 
 import java.lang.ref.WeakReference;
@@ -228,9 +228,7 @@ public class JokeManager {
                     public void onNext(Data data) {
                         boolean available = finalAvailable.isAvailable();
                         CommonLog.d(TAG + " offline onNext " + contentKeyLoading + ", " + available);
-                        if (!available) {
-                            throw new NotAvailableException();
-                        }
+                        AvailableUtil.mustAvailable(finalAvailable);
 
                         mLoadedPagesCount++;
 
