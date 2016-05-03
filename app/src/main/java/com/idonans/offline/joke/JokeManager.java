@@ -333,7 +333,7 @@ public class JokeManager {
 
     private static class JokeOfflineInfo {
         public long offlineTime;
-        // 笑话内容比较长，肯能不适宜在启动式直接加载到内存，使用 contentKey 来指向笑话内容在磁盘缓存中的 key
+        // 笑话内容比较长，可能不适宜在启动式直接加载到内存，使用 contentKey 来指向笑话内容在磁盘缓存中的 key
         public String contentKey;
 
         /**
