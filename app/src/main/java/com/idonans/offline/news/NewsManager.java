@@ -77,6 +77,25 @@ public class NewsManager {
                 .build();
 
         mNewsApiService = retrofit.create(NewsApiService.class);
+        mNewsListOfflineInfo = restoreNewsListOfflineInfo();
+    }
+
+    private static NewsListOfflineInfo restoreNewsListOfflineInfo() {
+        try {
+            String json = StorageManager.getInstance().getCache(KEY_NEWS_LIST_OFFLINE_INFO);
+            if (!TextUtils.isEmpty(json)) {
+                Gson gson = new Gson();
+                Type type = new TypeToken<NewsListOfflineInfo>() {
+                }.getType();
+                NewsListOfflineInfo newsListOfflineInfo = gson.fromJson(json, type);
+                if (newsListOfflineInfo != null && newsListOfflineInfo.hasContent()) {
+                    return newsListOfflineInfo;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
@@ -463,7 +482,7 @@ public class NewsManager {
          * 最新 100 条新闻热词
          */
         // http://www.tngou.net/api/top/list?rows=100
-        @GET("/api/top/list?rows=100")
+        @GET("/api/top/list?rows=3")
         Observable<NewsList> getLastestNewsList();
 
         /**
