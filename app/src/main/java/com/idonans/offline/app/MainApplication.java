@@ -3,6 +3,7 @@ package com.idonans.offline.app;
 import android.app.Application;
 
 import com.idonans.acommon.App;
+import com.idonans.offline.fresco.FrescoManager;
 
 /**
  * init
@@ -14,6 +15,7 @@ public class MainApplication extends Application {
     public void onCreate() {
         super.onCreate();
         App.init(this, new BuildConfigAdapterImpl());
+        FrescoManager.getInstance();
     }
 
 }
