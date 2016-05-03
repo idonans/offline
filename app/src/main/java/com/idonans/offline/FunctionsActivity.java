@@ -1,14 +1,11 @@
 package com.idonans.offline;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.support.v4.net.ConnectivityManagerCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,6 +22,7 @@ import com.idonans.acommon.lang.TaskQueue;
 import com.idonans.acommon.lang.Threads;
 import com.idonans.acommon.lang.WeakAvailable;
 import com.idonans.acommon.util.DimenUtil;
+import com.idonans.acommon.util.NetUtil;
 import com.idonans.acommon.util.ViewUtil;
 
 import java.util.List;
@@ -352,7 +350,7 @@ public class FunctionsActivity extends CommonActivity {
                     }
                 });
 
-                if (isActiveNetworkMetered()) {
+                if (NetUtil.isActiveNetworkMetered()) {
                     networkWarnTip.setVisibility(View.VISIBLE);
                     networkWarnConfirm.setVisibility(View.VISIBLE);
                     networkWarnConfirm.setSelected(false);
@@ -366,11 +364,6 @@ public class FunctionsActivity extends CommonActivity {
             }
         });
         alertDialog.show();
-    }
-
-    private boolean isActiveNetworkMetered() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        return ConnectivityManagerCompat.isActiveNetworkMetered(connectivityManager);
     }
 
 }
