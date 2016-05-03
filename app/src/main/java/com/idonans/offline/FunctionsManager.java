@@ -5,6 +5,8 @@ import android.content.Intent;
 
 import com.idonans.offline.joke.JokeActivity;
 import com.idonans.offline.joke.JokeManager;
+import com.idonans.offline.news.NewsListActivity;
+import com.idonans.offline.news.NewsManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +52,7 @@ public class FunctionsManager {
 
         List<Function> functions = new ArrayList<>();
         functions.add(new JokeFunction());
+        functions.add(new NewsListFunctions());
 
         mFunctions = functions;
     }
@@ -132,6 +135,50 @@ public class FunctionsManager {
         @Override
         public void startActivity(Context context) {
             Intent intent = new Intent(context, JokeActivity.class);
+            context.startActivity(intent);
+        }
+    }
+
+    /**
+     * 新闻热点
+     */
+    private class NewsListFunctions implements Function {
+
+        private final NewsManager mNewsManager = NewsManager.getInstance();
+
+        @Override
+        public boolean isLoading() {
+            return mNewsManager.isLoading();
+        }
+
+        @Override
+        public float getLoadingProgress() {
+            return mNewsManager.getLoadingProgress();
+        }
+
+        @Override
+        public long getOfflineTime() {
+            return mNewsManager.getOfflineNewsListTime();
+        }
+
+        @Override
+        public String getTitle() {
+            return "新闻热点";
+        }
+
+        @Override
+        public void startOffline() {
+            mNewsManager.offline(false);
+        }
+
+        @Override
+        public void cancel() {
+            mNewsManager.cancel();
+        }
+
+        @Override
+        public void startActivity(Context context) {
+            Intent intent = new Intent(context, NewsListActivity.class);
             context.startActivity(intent);
         }
     }
