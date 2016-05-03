@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.common.ResizeOptions;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.idonans.acommon.app.CommonActivity;
@@ -173,9 +174,13 @@ public class NewsListActivity extends CommonActivity {
         private TextView mNewsTitle;
         private TextView mNewsDesc;
         private TextView mNewsTime;
+        private final int mCoverWidth;
+        private final int mCoverHeight;
 
         public NewsItemViewHolder(View itemView) {
             super(itemView);
+            mCoverWidth = DimenUtil.dp2px(120);
+            mCoverHeight = DimenUtil.dp2px(120);
             mNewsCover = ViewUtil.findViewByID(itemView, R.id.news_cover);
             mNewsTitle = ViewUtil.findViewByID(itemView, R.id.news_title);
             mNewsDesc = ViewUtil.findViewByID(itemView, R.id.news_desc);
@@ -185,6 +190,7 @@ public class NewsListActivity extends CommonActivity {
         public void bind(final NewsManager.NewsDetailPreview newsItem, int position) {
             ImageRequest imageRequest = ImageRequestBuilder.newBuilderWithSource(Uri.parse(newsItem.imageCover))
                     .setLowestPermittedRequestLevel(ImageRequest.RequestLevel.DISK_CACHE)
+                    .setResizeOptions(new ResizeOptions(mCoverWidth, mCoverHeight))
                     .build();
             DraweeController controller = Fresco.newDraweeControllerBuilder()
                     .setImageRequest(imageRequest)
@@ -193,7 +199,7 @@ public class NewsListActivity extends CommonActivity {
 
             mNewsTitle.setText(newsItem.title);
             mNewsDesc.setText(newsItem.description);
-            mNewsTime.setText(String.format(Locale.SIMPLIFIED_CHINESE, "上次更新：%tF %tR", newsItem.time, newsItem.time));
+            mNewsTime.setText(String.format(Locale.SIMPLIFIED_CHINESE, "%tF %tR", newsItem.time, newsItem.time));
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
