@@ -50,6 +50,8 @@ public class JokeManager {
 
     // 如果当前正在缓存新的笑话，用来临时记录一个缓存 key, 当新的笑话缓存成功时，此 key 会被写入 JokeOfflineInfo
     private String mContentKeyLoading;
+    // 如果当前正在缓存新的笑话，此值用来记录已经缓存的页码
+    private int mLoadedPagesCount;
 
     // 如果是 null, 则标示没有从磁盘中加载到内存, 如果是 empty 集合，则标示磁盘中没有缓存
     private List<Data.Joke> mOfflineJokes;
@@ -138,6 +140,15 @@ public class JokeManager {
         return true;
     }
 
+    public float getLoadingProgress() {
+        if (!isLoading()) {
+            return 1f;
+        }
+
+        // 每次缓存共 10 页
+        return 1f * mLoadedPagesCount / 10;
+    }
+
     /**
      * 10 位时间戳, 精确到秒
      */
@@ -153,6 +164,8 @@ public class JokeManager {
         CommonLog.d(TAG + " startOffline " + contentKeyLoading);
 
         mContentKeyLoading = contentKeyLoading;
+        mLoadedPagesCount = 0;
+
         final Available finalAvailable = new Available() {
             @Override
             public boolean isAvailable() {
@@ -214,6 +227,8 @@ public class JokeManager {
                         if (!available) {
                             throw new NotAvailableException();
                         }
+
+                        mLoadedPagesCount++;
 
                         if (data != null
                                 && data.error_code == 0

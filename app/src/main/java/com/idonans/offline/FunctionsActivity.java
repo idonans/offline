@@ -277,11 +277,11 @@ public class FunctionsActivity extends CommonActivity {
             if (offlineTime > 0) {
                 offlineTimeBuffer.append(String.format(Locale.SIMPLIFIED_CHINESE, "上次更新：%tF %tR", offlineTime, offlineTime));
                 if (loading) {
-                    offlineTimeBuffer.append(" [正在更新]");
+                    offlineTimeBuffer.append(" [正在更新 " + Float.valueOf(function.getLoadingProgress() * 100).intValue() + "%]");
                 }
             } else {
                 if (loading) {
-                    offlineTimeBuffer.append("[正在更新]");
+                    offlineTimeBuffer.append("[正在更新 " + Float.valueOf(function.getLoadingProgress() * 100).intValue() + "%]");
                 } else {
                     offlineTimeBuffer.append("无更新记录");
                 }

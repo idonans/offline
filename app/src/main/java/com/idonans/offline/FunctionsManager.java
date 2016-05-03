@@ -76,6 +76,11 @@ public class FunctionsManager {
     public interface Function {
         boolean isLoading();
 
+        /**
+         * 数据加载进度 [0f, 1f]
+         */
+        float getLoadingProgress();
+
         long getOfflineTime();
 
         String getTitle();
@@ -97,6 +102,11 @@ public class FunctionsManager {
         @Override
         public boolean isLoading() {
             return mJokeManager.isLoading();
+        }
+
+        @Override
+        public float getLoadingProgress() {
+            return mJokeManager.getLoadingProgress();
         }
 
         @Override
