@@ -48,7 +48,7 @@ public class NewsListActivity extends CommonActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.functions_activity);
+        setContentView(R.layout.news_list_activity);
 
         final Toolbar toolbar = ViewUtil.findViewByID(this, R.id.toolbar);
         mTitle = ViewUtil.findViewByID(toolbar, R.id.view_title);
