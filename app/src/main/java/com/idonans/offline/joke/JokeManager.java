@@ -11,6 +11,7 @@ import com.idonans.acommon.lang.CommonLog;
 import com.idonans.acommon.lang.NotAvailableException;
 import com.idonans.offline.data.HttpManager;
 
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,8 +54,7 @@ public class JokeManager {
     // 如果当前正在缓存新的笑话，此值用来记录已经缓存的页码
     private int mLoadedPagesCount;
 
-    // 如果是 null, 则标示没有从磁盘中加载到内存, 如果是 empty 集合，则标示磁盘中没有缓存
-    private List<Data.Joke> mOfflineJokes;
+    private WeakReference<List<Data.Joke>> mOfflineJokesRef;
 
     private JokeManager() {
         Retrofit retrofit = new Retrofit.Builder()
@@ -106,16 +106,19 @@ public class JokeManager {
         return Observable.create(new Observable.OnSubscribe<List<Data.Joke>>() {
             @Override
             public void call(Subscriber<? super List<Data.Joke>> subscriber) {
-                loadOfflineJokesToMemory();
-                subscriber.onNext(mOfflineJokes);
+                List<Data.Joke> offlineJokes = loadOfflineJokesToMemory();
+                subscriber.onNext(offlineJokes);
                 subscriber.onCompleted();
             }
         });
     }
 
-    private void loadOfflineJokesToMemory() {
-        if (mOfflineJokes != null) {
-            return;
+    private List<Data.Joke> loadOfflineJokesToMemory() {
+        if (mOfflineJokesRef != null) {
+            List<Data.Joke> offlineJokes = mOfflineJokesRef.get();
+            if (offlineJokes != null) {
+                return offlineJokes;
+            }
         }
         List<Data.Joke> offlineJokes = null;
         if (mJokeOfflineInfo != null && mJokeOfflineInfo.hasContent()) {
@@ -124,7 +127,8 @@ public class JokeManager {
         if (offlineJokes == null) {
             offlineJokes = new ArrayList<>();
         }
-        mOfflineJokes = offlineJokes;
+        mOfflineJokesRef = new WeakReference<>(offlineJokes);
+        return offlineJokes;
     }
 
     /**
@@ -202,7 +206,7 @@ public class JokeManager {
                             if (jokeOfflineInfo != null) {
                                 // 新的缓存成功保存，同步到内存
                                 mJokeOfflineInfo = jokeOfflineInfo;
-                                mOfflineJokes = finalJokes;
+                                mOfflineJokesRef = new WeakReference<>(finalJokes);
                                 return;
                             }
                         }
