@@ -25,6 +25,7 @@ import retrofit2.http.Query;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
+import rx.Subscription;
 import rx.schedulers.Schedulers;
 
 /**
@@ -53,6 +54,7 @@ public class JokeManager {
     private String mContentKeyLoading;
     // 如果当前正在缓存新的笑话，此值用来记录已经缓存的页码
     private int mLoadedPagesCount;
+    private Subscription mLoadingSubscription;
 
     private WeakReference<List<Data.Joke>> mOfflineJokesRef;
 
@@ -90,6 +92,7 @@ public class JokeManager {
      */
     public void cancel() {
         mContentKeyLoading = null;
+        setLoadingSubscription(null);
     }
 
     /**
@@ -160,6 +163,13 @@ public class JokeManager {
         return System.currentTimeMillis() / 1000;
     }
 
+    public void setLoadingSubscription(Subscription loadingSubscription) {
+        if (mLoadingSubscription != null) {
+            mLoadingSubscription.unsubscribe();
+        }
+        mLoadingSubscription = loadingSubscription;
+    }
+
     /**
      * 开始缓存新的内容
      */
@@ -179,7 +189,7 @@ public class JokeManager {
         final long timeSecond = getCurrentTimeSecond();
         final List<Data.Joke> finalJokes = new ArrayList<>();
 
-        mJokeApiService.getLastestJokes(timeSecond, 1)
+        Subscription loadingSubscription = mJokeApiService.getLastestJokes(timeSecond, 1)
                 .mergeWith(mJokeApiService.getLastestJokes(timeSecond, 2))
                 .mergeWith(mJokeApiService.getLastestJokes(timeSecond, 3))
                 .mergeWith(mJokeApiService.getLastestJokes(timeSecond, 4))
@@ -246,6 +256,7 @@ public class JokeManager {
                         }
                     }
                 });
+        setLoadingSubscription(loadingSubscription);
     }
 
     /**

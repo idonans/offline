@@ -16,6 +16,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import rx.Observable;
 import rx.Observer;
+import rx.Subscription;
 import rx.schedulers.Schedulers;
 
 /**
@@ -46,6 +47,7 @@ public class NewsManager {
     private int mLoadedNewsDetailCount;
     // 如果当前正在缓存新的新闻热词，此值用来记录本次需要缓存的新闻热词详情的总条数
     private int mNewsDetailCountForCache;
+    private Subscription mLoadingSubscription;
 
     private NewsManager() {
         Retrofit retrofit = new Retrofit.Builder()
@@ -80,6 +82,7 @@ public class NewsManager {
      */
     public void cancel() {
         mContentKeyLoading = null;
+        setLoadingSubscription(null);
     }
 
     /**
@@ -116,6 +119,13 @@ public class NewsManager {
         return 1f * mLoadedNewsDetailCount / mNewsDetailCountForCache;
     }
 
+    public void setLoadingSubscription(Subscription loadingSubscription) {
+        if (mLoadingSubscription != null) {
+            mLoadingSubscription.unsubscribe();
+        }
+        mLoadingSubscription = loadingSubscription;
+    }
+
     /**
      * 开始缓存新的新闻热词列表和详情
      */
@@ -134,7 +144,7 @@ public class NewsManager {
             }
         };
 
-        mNewsApiService.getLastestNewsList()
+        Subscription loadingSubscription = mNewsApiService.getLastestNewsList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribe(new Observer<NewsList>() {
@@ -173,6 +183,7 @@ public class NewsManager {
                         }
                     }
                 });
+        setLoadingSubscription(loadingSubscription);
     }
 
     private static class NewsListOfflineInfo {
