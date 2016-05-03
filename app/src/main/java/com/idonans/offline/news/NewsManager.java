@@ -482,7 +482,7 @@ public class NewsManager {
          * 最新 100 条新闻热词
          */
         // http://www.tngou.net/api/top/list?rows=100
-        @GET("/api/top/list?rows=3")
+        @GET("/api/top/list?rows=100")
         Observable<NewsList> getLastestNewsList();
 
         /**
