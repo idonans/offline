@@ -99,7 +99,7 @@ public class JokeManager {
         if (mJokeOfflineInfo != null && mJokeOfflineInfo.hasContent()) {
             return mJokeOfflineInfo.offlineTime;
         }
-        return 0;
+        return 0L;
     }
 
     public Observable<List<Data.Joke>> getOfflineJokes() {
