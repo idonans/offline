@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.idonans.acommon.app.CommonActivity;
 import com.idonans.acommon.util.ViewUtil;
 import com.idonans.offline.R;
+import com.idonans.offline.rx.SubscriptionHolder;
 
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class JokeActivity extends CommonActivity {
     private SwipeRefreshLayout mRefreshLayout;
     private RecyclerView mRecyclerView;
 
-    private Subscription mSubscriptionShown;
+    private SubscriptionHolder mSubscriptionHolderShown = new SubscriptionHolder();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,14 +94,7 @@ public class JokeActivity extends CommonActivity {
                         }
                     }
                 });
-        setSubscriptionShown(subscription);
-    }
-
-    private void setSubscriptionShown(Subscription subscriptionShown) {
-        if (mSubscriptionShown != null) {
-            mSubscriptionShown.unsubscribe();
-        }
-        mSubscriptionShown = subscriptionShown;
+        mSubscriptionHolderShown.setSubscription(subscription);
     }
 
     private class JokesAdapter extends RecyclerView.Adapter {
@@ -150,7 +144,7 @@ public class JokeActivity extends CommonActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        setSubscriptionShown(null);
+        mSubscriptionHolderShown.setSubscription(null);
     }
 
 }

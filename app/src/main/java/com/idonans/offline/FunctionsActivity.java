@@ -20,6 +20,7 @@ import com.idonans.acommon.lang.Threads;
 import com.idonans.acommon.lang.WeakAvailable;
 import com.idonans.acommon.util.NetUtil;
 import com.idonans.acommon.util.ViewUtil;
+import com.idonans.offline.rx.SubscriptionHolder;
 import com.idonans.offline.widget.RecyclerViewSpaceItemDividerDecoration;
 
 import java.util.List;
@@ -46,7 +47,8 @@ public class FunctionsActivity extends CommonActivity {
 
     private SwipeRefreshLayout mRefreshLayout;
     private RecyclerView mRecyclerView;
-    private Subscription mSubscriptionShown;
+
+    private SubscriptionHolder mSubscriptionHolderShown = new SubscriptionHolder();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +107,7 @@ public class FunctionsActivity extends CommonActivity {
                         }
                     }
                 });
-        setSubscriptionShown(subscription);
+        mSubscriptionHolderShown.setSubscription(subscription);
     }
 
 
@@ -246,17 +248,10 @@ public class FunctionsActivity extends CommonActivity {
 
     }
 
-    public void setSubscriptionShown(Subscription subscriptionShown) {
-        if (mSubscriptionShown != null) {
-            mSubscriptionShown.unsubscribe();
-        }
-        mSubscriptionShown = subscriptionShown;
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        setSubscriptionShown(null);
+        mSubscriptionHolderShown.setSubscription(null);
     }
 
     private void showMoreDialog() {

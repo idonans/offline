@@ -21,6 +21,7 @@ import com.idonans.acommon.app.CommonActivity;
 import com.idonans.acommon.util.DimenUtil;
 import com.idonans.acommon.util.ViewUtil;
 import com.idonans.offline.R;
+import com.idonans.offline.rx.SubscriptionHolder;
 import com.idonans.offline.widget.RecyclerViewSpaceItemDividerDecoration;
 
 import java.util.List;
@@ -42,7 +43,7 @@ public class NewsListActivity extends CommonActivity {
     private SwipeRefreshLayout mRefreshLayout;
     private RecyclerView mRecyclerView;
 
-    private Subscription mSubscriptionShown;
+    private SubscriptionHolder mSubscriptionHolderShown = new SubscriptionHolder();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +92,7 @@ public class NewsListActivity extends CommonActivity {
                         }
                     }
                 });
-        setSubscriptionShown(subscription);
+        mSubscriptionHolderShown.setSubscription(subscription);
     }
 
     private class NewsListAdapter extends RecyclerView.Adapter {
@@ -161,17 +162,10 @@ public class NewsListActivity extends CommonActivity {
 
     }
 
-    public void setSubscriptionShown(Subscription subscriptionShown) {
-        if (mSubscriptionShown != null) {
-            mSubscriptionShown.unsubscribe();
-        }
-        mSubscriptionShown = subscriptionShown;
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        setSubscriptionShown(null);
+        mSubscriptionHolderShown.setSubscription(null);
     }
 
 }
