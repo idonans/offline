@@ -51,7 +51,14 @@ public class NewsListActivity extends CommonActivity {
         setContentView(R.layout.news_list_activity);
 
         final Toolbar toolbar = ViewUtil.findViewByID(this, R.id.toolbar);
-        mTitle = ViewUtil.findViewByID(toolbar, R.id.view_title);
+        View backPanel = ViewUtil.findViewByID(toolbar, R.id.back_panel);
+        backPanel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+        mTitle = ViewUtil.findViewByID(backPanel, R.id.view_title);
         mTitle.setText("新闻热点");
 
         mRefreshLayout = ViewUtil.findViewByID(this, R.id.refresh_layout);

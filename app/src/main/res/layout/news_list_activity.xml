@@ -23,16 +23,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize">
 
-                <TextView
-                    android:id="@+id/view_title"
+                <LinearLayout
+                    android:id="@+id/back_panel"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:textColor="@color/material_grey_50"
-                    android:textSize="@dimen/abc_text_size_title_material_toolbar"/>
+                    android:orientation="horizontal">
 
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:minWidth="36dp"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/abc_ic_ab_back_mtrl_am_alpha"
+                        android:tint="@color/material_grey_50"/>
+
+                    <TextView
+                        android:id="@+id/view_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/material_grey_50"
+                        android:textSize="@dimen/abc_text_size_title_material_toolbar"/>
+                </LinearLayout>
             </RelativeLayout>
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
