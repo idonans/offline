@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/news_cover"
         android:lines="1"
-        android:paddingBottom="5dp"
+        android:paddingBottom="3dp"
         android:paddingRight="10dp"
         android:paddingTop="10dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
@@ -28,7 +28,7 @@
         android:layout_below="@id/news_title"
         android:layout_toRightOf="@id/news_cover"
         android:lines="3"
-        android:paddingBottom="10dp"
+        android:paddingBottom="5dp"
         android:paddingRight="10dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
