@@ -1,6 +1,7 @@
 package com.idonans.offline.joke;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -27,7 +28,10 @@ import rx.schedulers.Schedulers;
 public class JokeActivity extends CommonActivity {
 
     private TextView mTitle;
+
+    private SwipeRefreshLayout mRefreshLayout;
     private RecyclerView mRecyclerView;
+
     private Subscription mSubscriptionShown;
 
     @Override
@@ -46,8 +50,17 @@ public class JokeActivity extends CommonActivity {
         mTitle = ViewUtil.findViewByID(backPanel, R.id.view_title);
         mTitle.setText("就是一个笑话");
 
-        mRecyclerView = ViewUtil.findViewByID(this, R.id.recycler_view);
+        mRefreshLayout = ViewUtil.findViewByID(this, R.id.refresh_layout);
+
+        mRecyclerView = ViewUtil.findViewByID(mRefreshLayout, R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+
+        mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                showOfflineJokes();
+            }
+        });
 
         showOfflineJokes();
     }

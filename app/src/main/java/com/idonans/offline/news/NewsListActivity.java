@@ -41,6 +41,7 @@ public class NewsListActivity extends CommonActivity {
 
     private SwipeRefreshLayout mRefreshLayout;
     private RecyclerView mRecyclerView;
+
     private Subscription mSubscriptionShown;
 
     @Override
