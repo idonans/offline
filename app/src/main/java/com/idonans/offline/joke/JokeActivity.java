@@ -16,9 +16,9 @@ import com.idonans.offline.R;
 
 import java.util.List;
 
+import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -75,9 +75,19 @@ public class JokeActivity extends CommonActivity {
         Subscription subscription = JokeManager.getInstance().getOfflineJokes()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<List<JokeManager.Data.Joke>>() {
+                .subscribe(new Subscriber<List<JokeManager.Data.Joke>>() {
                     @Override
-                    public void call(List<JokeManager.Data.Joke> jokes) {
+                    public void onCompleted() {
+                        mRefreshLayout.setRefreshing(false);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        mRefreshLayout.setRefreshing(false);
+                    }
+
+                    @Override
+                    public void onNext(List<JokeManager.Data.Joke> jokes) {
                         if (jokes != null) {
                             mRecyclerView.setAdapter(new JokesAdapter(jokes));
                         }
