@@ -8,6 +8,7 @@ import com.google.gson.reflect.TypeToken;
 import com.idonans.acommon.data.StorageManager;
 import com.idonans.acommon.lang.Available;
 import com.idonans.acommon.lang.CommonLog;
+import com.idonans.acommon.lang.Threads;
 import com.idonans.acommon.util.AvailableUtil;
 import com.idonans.offline.data.HttpManager;
 
@@ -200,10 +201,11 @@ public class JokeManager {
                 .mergeWith(mJokeApiService.getLastestJokes(timeSecond, 9))
                 .mergeWith(mJokeApiService.getLastestJokes(timeSecond, 10))
                 .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
+                .observeOn(Schedulers.immediate())
                 .subscribe(new Observer<Data>() {
                     @Override
                     public void onCompleted() {
+                        Threads.mustNotUi();
                         boolean available = finalAvailable.isAvailable();
                         CommonLog.d(TAG + " offline onCompleted " + contentKeyLoading + ", " + available);
                         if (!available) {
@@ -226,6 +228,7 @@ public class JokeManager {
 
                     @Override
                     public void onError(Throwable e) {
+                        Threads.mustNotUi();
                         boolean available = finalAvailable.isAvailable();
                         CommonLog.d(TAG + " offline onError " + contentKeyLoading + ", " + available);
                         if (!available) {
@@ -236,6 +239,7 @@ public class JokeManager {
 
                     @Override
                     public void onNext(Data data) {
+                        Threads.mustNotUi();
                         boolean available = finalAvailable.isAvailable();
                         CommonLog.d(TAG + " offline onNext " + contentKeyLoading + ", " + available);
                         AvailableUtil.mustAvailable(finalAvailable);
