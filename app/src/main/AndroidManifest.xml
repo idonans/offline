@@ -21,6 +21,7 @@
         <activity android:name="com.idonans.offline.FunctionsActivity"/>
         <activity android:name="com.idonans.offline.joke.JokeActivity"/>
         <activity android:name="com.idonans.offline.news.NewsListActivity"/>
+        <activity android:name="com.idonans.offline.news.NewsDetailActivity"/>
     </application>
 
 </manifest>

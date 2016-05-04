@@ -169,7 +169,7 @@ public class NewsListActivity extends CommonActivity {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // TODO
+                    startActivity(NewsDetailActivity.newIntent(NewsListActivity.this, newsItem.offlineLocalDetailKey));
                 }
             });
         }
