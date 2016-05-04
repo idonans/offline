@@ -356,10 +356,11 @@ public class NewsManager {
                     }
                 })
                 .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
+                .observeOn(Schedulers.immediate())
                 .subscribe(new Observer<NewsDetailPair>() {
                     @Override
                     public void onCompleted() {
+                        Threads.mustNotUi();
                         boolean available = finalAvailable.isAvailable();
                         CommonLog.d(TAG + " offline onCompleted " + contentKeyLoading + ", " + available);
                         if (!available) {
@@ -381,6 +382,7 @@ public class NewsManager {
 
                     @Override
                     public void onError(Throwable e) {
+                        Threads.mustNotUi();
                         boolean available = finalAvailable.isAvailable();
                         CommonLog.d(TAG + " offline onError " + contentKeyLoading + ", " + available);
                         if (!available) {
@@ -391,6 +393,7 @@ public class NewsManager {
 
                     @Override
                     public void onNext(NewsDetailPair newsDetailPair) {
+                        Threads.mustNotUi();
                         boolean available = finalAvailable.isAvailable();
                         CommonLog.d(TAG + " offline onNext " + contentKeyLoading + ", " + available);
                         AvailableUtil.mustAvailable(finalAvailable);
