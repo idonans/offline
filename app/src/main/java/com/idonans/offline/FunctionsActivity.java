@@ -1,10 +1,7 @@
 package com.idonans.offline;
 
 import android.content.DialogInterface;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
@@ -21,9 +18,9 @@ import com.idonans.acommon.lang.CommonLog;
 import com.idonans.acommon.lang.TaskQueue;
 import com.idonans.acommon.lang.Threads;
 import com.idonans.acommon.lang.WeakAvailable;
-import com.idonans.acommon.util.DimenUtil;
 import com.idonans.acommon.util.NetUtil;
 import com.idonans.acommon.util.ViewUtil;
+import com.idonans.offline.widget.RecyclerViewSpaceItemDividerDecoration;
 
 import java.util.List;
 import java.util.Locale;
@@ -74,7 +71,7 @@ public class FunctionsActivity extends CommonActivity {
 
         mRecyclerView = ViewUtil.findViewByID(mRefreshLayout, R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        mRecyclerView.addItemDecoration(new FunctionsItemDivider());
+        mRecyclerView.addItemDecoration(RecyclerViewSpaceItemDividerDecoration.defaultSize(Color.DKGRAY));
 
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -180,55 +177,6 @@ public class FunctionsActivity extends CommonActivity {
                     functionsActivity.mOfflineProgressSyncQueue.enqueue(OfflineProgressTask.this);
                 }
             });
-        }
-
-    }
-
-    private class FunctionsItemDivider extends RecyclerView.ItemDecoration {
-
-        private final Paint mPaintDivider;
-        private final int mEmptyArea;
-
-        private FunctionsItemDivider() {
-            mPaintDivider = new Paint();
-            mPaintDivider.setColor(Color.DKGRAY);
-            mEmptyArea = DimenUtil.dp2px(20);
-        }
-
-        @Override
-        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-            // 第一个前面和最后一个后面有一定的空白区域, 每个之间有空白区域
-            int count = parent.getAdapter().getItemCount();
-
-            int position = parent.getChildAdapterPosition(view);
-            if (position == 0) {
-                outRect.top = mEmptyArea;
-            }
-
-            if (position == count - 1) {
-                outRect.bottom = mEmptyArea;
-            } else {
-                outRect.bottom = 1;
-            }
-        }
-
-        @Override
-        public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
-            LinearLayoutManager layoutManager = (LinearLayoutManager) parent.getLayoutManager();
-            int firstPosition = layoutManager.findFirstVisibleItemPosition();
-            int lastPosition = layoutManager.findLastVisibleItemPosition();
-
-            if (firstPosition < 0 || lastPosition < 0 || firstPosition == lastPosition) {
-                return;
-            }
-
-            View firstView = layoutManager.findViewByPosition(firstPosition);
-            View lastView = layoutManager.findViewByPosition(lastPosition);
-            if (firstView == null || lastView == null) {
-                return;
-            }
-
-            c.drawRect(0, firstView.getTop(), parent.getWidth(), lastView.getBottom(), mPaintDivider);
         }
 
     }
