@@ -14,6 +14,7 @@ import com.idonans.acommon.app.CommonActivity;
 import com.idonans.acommon.util.ViewUtil;
 import com.idonans.offline.R;
 import com.idonans.offline.rx.SubscriptionHolder;
+import com.idonans.offline.util.RecyclerViewHelper;
 
 import java.util.List;
 
@@ -41,6 +42,12 @@ public class JokeActivity extends CommonActivity {
         setContentView(R.layout.joke_activity);
 
         Toolbar toolbar = ViewUtil.findViewByID(this, R.id.toolbar);
+        toolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RecyclerViewHelper.scrollToHead(mRecyclerView);
+            }
+        });
         View backPanel = ViewUtil.findViewByID(toolbar, R.id.back_panel);
         backPanel.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -22,6 +22,7 @@ import com.idonans.acommon.util.DimenUtil;
 import com.idonans.acommon.util.ViewUtil;
 import com.idonans.offline.R;
 import com.idonans.offline.rx.SubscriptionHolder;
+import com.idonans.offline.util.RecyclerViewHelper;
 import com.idonans.offline.widget.RecyclerViewSpaceItemDividerDecoration;
 
 import java.util.List;
@@ -51,6 +52,12 @@ public class NewsListActivity extends CommonActivity {
         setContentView(R.layout.news_list_activity);
 
         final Toolbar toolbar = ViewUtil.findViewByID(this, R.id.toolbar);
+        toolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RecyclerViewHelper.scrollToHead(mRecyclerView);
+            }
+        });
         View backPanel = ViewUtil.findViewByID(toolbar, R.id.back_panel);
         backPanel.setOnClickListener(new View.OnClickListener() {
             @Override

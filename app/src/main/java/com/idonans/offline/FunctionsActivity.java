@@ -21,6 +21,7 @@ import com.idonans.acommon.lang.WeakAvailable;
 import com.idonans.acommon.util.NetUtil;
 import com.idonans.acommon.util.ViewUtil;
 import com.idonans.offline.rx.SubscriptionHolder;
+import com.idonans.offline.util.RecyclerViewHelper;
 import com.idonans.offline.widget.RecyclerViewSpaceItemDividerDecoration;
 
 import java.util.List;
@@ -56,6 +57,12 @@ public class FunctionsActivity extends CommonActivity {
         setContentView(R.layout.functions_activity);
 
         final Toolbar toolbar = ViewUtil.findViewByID(this, R.id.toolbar);
+        toolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RecyclerViewHelper.scrollToHead(mRecyclerView);
+            }
+        });
         mTitle = ViewUtil.findViewByID(toolbar, R.id.view_title);
         mTitle.setText("离线阅读");
 
