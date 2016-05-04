@@ -21,7 +21,7 @@ import com.idonans.acommon.lang.WeakAvailable;
 import com.idonans.acommon.util.NetUtil;
 import com.idonans.acommon.util.ViewUtil;
 import com.idonans.offline.rx.SubscriptionHolder;
-import com.idonans.offline.util.RecyclerViewHelper;
+import com.idonans.offline.util.ScrollHelper;
 import com.idonans.offline.widget.RecyclerViewSpaceItemDividerDecoration;
 
 import java.util.List;
@@ -60,7 +60,7 @@ public class FunctionsActivity extends CommonActivity {
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RecyclerViewHelper.scrollToHead(mRecyclerView);
+                ScrollHelper.scrollToHead(mRecyclerView);
             }
         });
         mTitle = ViewUtil.findViewByID(toolbar, R.id.view_title);

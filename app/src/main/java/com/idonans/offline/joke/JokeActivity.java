@@ -14,7 +14,7 @@ import com.idonans.acommon.app.CommonActivity;
 import com.idonans.acommon.util.ViewUtil;
 import com.idonans.offline.R;
 import com.idonans.offline.rx.SubscriptionHolder;
-import com.idonans.offline.util.RecyclerViewHelper;
+import com.idonans.offline.util.ScrollHelper;
 
 import java.util.List;
 
@@ -45,7 +45,7 @@ public class JokeActivity extends CommonActivity {
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RecyclerViewHelper.scrollToHead(mRecyclerView);
+                ScrollHelper.scrollToHead(mRecyclerView);
             }
         });
         View backPanel = ViewUtil.findViewByID(toolbar, R.id.back_panel);

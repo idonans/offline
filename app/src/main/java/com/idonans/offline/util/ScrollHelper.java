@@ -11,7 +11,7 @@ public class ScrollHelper {
 
     public static void scrollToHead(RecyclerView recyclerView) {
         if (recyclerView != null && recyclerView.getChildCount() > 0) {
-            recyclerView.scrollTo(0, 0);
+            recyclerView.scrollToPosition(0);
         }
     }
 
