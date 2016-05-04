@@ -25,7 +25,7 @@ import com.idonans.offline.widget.RecyclerViewSpaceItemDividerDecoration;
 import java.util.List;
 import java.util.Locale;
 
-import rx.Observer;
+import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -87,7 +87,7 @@ public class FunctionsActivity extends CommonActivity {
         Subscription subscription = FunctionsManager.getInstance().getFunctions()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<FunctionsManager.Function>>() {
+                .subscribe(new Subscriber<List<FunctionsManager.Function>>() {
                     @Override
                     public void onCompleted() {
                         mRefreshLayout.setRefreshing(false);

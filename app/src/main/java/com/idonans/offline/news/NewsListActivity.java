@@ -26,7 +26,7 @@ import com.idonans.offline.widget.RecyclerViewSpaceItemDividerDecoration;
 import java.util.List;
 import java.util.Locale;
 
-import rx.Observer;
+import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -73,7 +73,7 @@ public class NewsListActivity extends CommonActivity {
         Subscription subscription = NewsManager.getInstance().getOfflineNewsList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<NewsManager.NewsDetailPreview>>() {
+                .subscribe(new Subscriber<List<NewsManager.NewsDetailPreview>>() {
                     @Override
                     public void onCompleted() {
                         mRefreshLayout.setRefreshing(false);
