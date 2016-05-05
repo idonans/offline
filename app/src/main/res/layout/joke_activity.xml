@@ -5,6 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/material_grey_900"
+    android:paddingTop="@dimen/status_bar_height_appcompat"
     tools:context="com.idonans.offline.joke.JokeActivity">
 
     <android.support.design.widget.AppBarLayout

@@ -1,29 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/material_grey_50"
-    android:padding="10dp"
+    android:background="@color/material_grey_900"
+    android:paddingTop="@dimen/status_bar_height_appcompat"
     tools:context="com.idonans.offline.SplashActivity">
 
-    <TextView
-        android:id="@+id/tip"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:text="@string/splash_tip"
-        android:textColor="@color/material_grey_900"
-        android:textSize="@dimen/abc_text_size_large_material"/>
+        android:layout_height="match_parent"
+        android:background="@color/material_grey_50"
+        android:padding="10dp">
 
-    <TextView
-        android:id="@+id/version_desc"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:gravity="right"
-        android:textColor="@color/material_grey_900"
-        android:textSize="@dimen/abc_text_size_small_material"/>
-</RelativeLayout>
+        <TextView
+            android:id="@+id/tip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/splash_tip"
+            android:textColor="@color/material_grey_900"
+            android:textSize="@dimen/abc_text_size_large_material"/>
+
+        <TextView
+            android:id="@+id/version_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="right"
+            android:textColor="@color/material_grey_900"
+            android:textSize="@dimen/abc_text_size_small_material"/>
+    </RelativeLayout>
+</FrameLayout>

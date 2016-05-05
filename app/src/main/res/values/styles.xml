@@ -1,7 +1,10 @@
 <resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="BaseAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="windowActionModeOverlay">true</item>
     </style>
 
+    <style name="BaseAppTheme.AppCompat"></style>
+
+    <style name="AppTheme" parent="BaseAppTheme.AppCompat"/>
 </resources>
