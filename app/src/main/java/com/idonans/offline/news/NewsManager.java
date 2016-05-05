@@ -17,6 +17,7 @@ import com.idonans.acommon.lang.CommonLog;
 import com.idonans.acommon.lang.Threads;
 import com.idonans.acommon.util.AvailableUtil;
 import com.idonans.offline.data.HttpManager;
+import com.idonans.offline.rx.SubscriptionHolder;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Type;
@@ -64,7 +65,7 @@ public class NewsManager {
     private int mLoadedNewsDetailCount;
     // 如果当前正在缓存新的新闻热词，此值用来记录本次需要缓存的新闻热词详情的总条数
     private int mNewsDetailCountForCache;
-    private Subscription mLoadingSubscription;
+    private final SubscriptionHolder mSubscriptionHolderLoading = new SubscriptionHolder();
 
     private WeakReference<List<NewsDetailPreview>> mNewsDetailPreviewListRef;
 
@@ -120,7 +121,7 @@ public class NewsManager {
      */
     public void cancel() {
         mContentKeyLoading = null;
-        setLoadingSubscription(null);
+        mSubscriptionHolderLoading.setSubscription(null);
     }
 
     /**
@@ -228,13 +229,6 @@ public class NewsManager {
             return 0f;
         }
         return 1f * mLoadedNewsDetailCount / mNewsDetailCountForCache;
-    }
-
-    public void setLoadingSubscription(Subscription loadingSubscription) {
-        if (mLoadingSubscription != null) {
-            mLoadingSubscription.unsubscribe();
-        }
-        mLoadingSubscription = loadingSubscription;
     }
 
     /**
@@ -403,7 +397,7 @@ public class NewsManager {
                         }
                     }
                 });
-        setLoadingSubscription(loadingSubscription);
+        mSubscriptionHolderLoading.setSubscription(loadingSubscription);
     }
 
     private NewsListOfflineInfo saveNewsDetailPreviewList(String key, List<NewsDetailPreview> newsDetailPreviewList) {

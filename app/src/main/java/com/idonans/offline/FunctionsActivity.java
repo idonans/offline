@@ -49,7 +49,7 @@ public class FunctionsActivity extends CommonActivity {
     private SwipeRefreshLayout mRefreshLayout;
     private RecyclerView mRecyclerView;
 
-    private SubscriptionHolder mSubscriptionHolderShown = new SubscriptionHolder();
+    private final SubscriptionHolder mSubscriptionHolderShown = new SubscriptionHolder();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -53,7 +53,7 @@ public class NewsDetailActivity extends CommonActivity {
     private int mCoverWidth;
     private int mCoverHeight;
 
-    private SubscriptionHolder mSubscriptionHolderShown = new SubscriptionHolder();
+    private final SubscriptionHolder mSubscriptionHolderShown = new SubscriptionHolder();
 
     private String mLocalNewsDetailKey;
 

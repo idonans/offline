@@ -11,6 +11,7 @@ import com.idonans.acommon.lang.CommonLog;
 import com.idonans.acommon.lang.Threads;
 import com.idonans.acommon.util.AvailableUtil;
 import com.idonans.offline.data.HttpManager;
+import com.idonans.offline.rx.SubscriptionHolder;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Type;
@@ -55,7 +56,7 @@ public class JokeManager {
     private String mContentKeyLoading;
     // 如果当前正在缓存新的笑话，此值用来记录已经缓存的页码
     private int mLoadedPagesCount;
-    private Subscription mLoadingSubscription;
+    private final SubscriptionHolder mSubscriptionHolderLoading = new SubscriptionHolder();
 
     private WeakReference<List<Data.Joke>> mOfflineJokesRef;
 
@@ -93,7 +94,7 @@ public class JokeManager {
      */
     public void cancel() {
         mContentKeyLoading = null;
-        setLoadingSubscription(null);
+        mSubscriptionHolderLoading.setSubscription(null);
     }
 
     /**
@@ -162,13 +163,6 @@ public class JokeManager {
      */
     private long getCurrentTimeSecond() {
         return System.currentTimeMillis() / 1000;
-    }
-
-    public void setLoadingSubscription(Subscription loadingSubscription) {
-        if (mLoadingSubscription != null) {
-            mLoadingSubscription.unsubscribe();
-        }
-        mLoadingSubscription = loadingSubscription;
     }
 
     /**
@@ -260,7 +254,7 @@ public class JokeManager {
                         }
                     }
                 });
-        setLoadingSubscription(loadingSubscription);
+        mSubscriptionHolderLoading.setSubscription(loadingSubscription);
     }
 
     /**
