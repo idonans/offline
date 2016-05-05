@@ -51,7 +51,7 @@
                     android:minWidth="36dp"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
-                    android:text="&#xe727;"
+                    android:text="@string/offline_icf_add"
                     android:textColor="@color/material_grey_50"
                     android:textSize="@dimen/abc_text_size_title_material_toolbar"/>
             </RelativeLayout>

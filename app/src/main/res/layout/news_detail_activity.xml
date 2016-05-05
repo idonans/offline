@@ -35,7 +35,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:minWidth="36dp"
-                        android:text="&#xe779;"
+                        android:text="@string/offline_icf_back"
                         android:textColor="@color/material_grey_50"
                         android:textSize="@dimen/abc_text_size_title_material_toolbar"/>
 

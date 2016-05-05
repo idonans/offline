@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="offline_icf_back">&#xe697;</string>
+    <string name="offline_icf_add">&#xe6b9;</string>
+</resources>
