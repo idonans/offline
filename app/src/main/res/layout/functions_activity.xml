@@ -42,15 +42,18 @@
                     android:textColor="@color/material_grey_300"
                     android:textSize="@dimen/abc_text_size_subtitle_material_toolbar"/>
 
-                <ImageView
+                <TextView
                     android:id="@+id/more"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
+                    android:gravity="center"
                     android:minWidth="36dp"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/abc_ic_menu_moreoverflow_mtrl_alpha"
-                    android:tint="@color/material_grey_50"/>
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:text="&#xe727;"
+                    android:textColor="@color/material_grey_50"
+                    android:textSize="@dimen/abc_text_size_title_material_toolbar"/>
             </RelativeLayout>
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>

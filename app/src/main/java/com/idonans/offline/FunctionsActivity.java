@@ -10,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.idonans.acommon.app.CommonActivity;
@@ -21,6 +20,7 @@ import com.idonans.acommon.lang.WeakAvailable;
 import com.idonans.acommon.util.NetUtil;
 import com.idonans.acommon.util.ViewUtil;
 import com.idonans.offline.rx.SubscriptionHolder;
+import com.idonans.offline.util.IconFontUtil;
 import com.idonans.offline.util.ScrollHelper;
 import com.idonans.offline.widget.RecyclerViewSpaceItemDividerDecoration;
 
@@ -42,7 +42,7 @@ public class FunctionsActivity extends CommonActivity {
 
     private TextView mTitle;
     private TextView mOfflineProgress;
-    private ImageView mMore;
+    private TextView mMore;
 
     private final TaskQueue mOfflineProgressSyncQueue = new TaskQueue(1);
 
@@ -69,6 +69,7 @@ public class FunctionsActivity extends CommonActivity {
         mOfflineProgress = ViewUtil.findViewByID(toolbar, R.id.offline_progress);
 
         mMore = ViewUtil.findViewByID(toolbar, R.id.more);
+        IconFontUtil.setIconFont(mMore, "icon_font/offline.ttf");
         mMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
