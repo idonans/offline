@@ -69,7 +69,7 @@ public class FunctionsActivity extends CommonActivity {
         mOfflineProgress = ViewUtil.findViewByID(toolbar, R.id.offline_progress);
 
         mMore = ViewUtil.findViewByID(toolbar, R.id.more);
-        IconFontUtil.setIconFont(mMore, "icon_font/offline.ttf");
+        IconFontUtil.setIconFont(mMore, IconFontPath.OFFLINE);
         mMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

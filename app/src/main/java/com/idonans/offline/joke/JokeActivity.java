@@ -12,8 +12,10 @@ import android.widget.Toast;
 
 import com.idonans.acommon.app.CommonActivity;
 import com.idonans.acommon.util.ViewUtil;
+import com.idonans.offline.IconFontPath;
 import com.idonans.offline.R;
 import com.idonans.offline.rx.SubscriptionHolder;
+import com.idonans.offline.util.IconFontUtil;
 import com.idonans.offline.util.ScrollHelper;
 
 import java.util.List;
@@ -55,6 +57,8 @@ public class JokeActivity extends CommonActivity {
                 onBackPressed();
             }
         });
+        TextView viewBack = ViewUtil.findViewByID(backPanel, R.id.view_back);
+        IconFontUtil.setIconFont(viewBack, IconFontPath.OFFLINE);
         mTitle = ViewUtil.findViewByID(backPanel, R.id.view_title);
         mTitle.setText("就是一个笑话");
 
