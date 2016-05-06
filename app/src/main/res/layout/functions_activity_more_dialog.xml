@@ -23,10 +23,14 @@
         android:visibility="gone">
 
         <CheckBox
+            android:id="@+id/view_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:duplicateParentState="true"/>
+            android:clickable="false"
+            android:duplicateParentState="true"
+            android:focusable="false"
+            android:focusableInTouchMode="false"/>
 
         <TextView
             android:layout_width="match_parent"

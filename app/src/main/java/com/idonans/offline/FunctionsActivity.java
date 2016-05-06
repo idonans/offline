@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.idonans.acommon.app.CommonActivity;
@@ -276,6 +277,7 @@ public class FunctionsActivity extends CommonActivity {
                 final AlertDialog alertDialog = (AlertDialog) dialog;
                 final View networkWarnTip = alertDialog.findViewById(R.id.network_warn_tip);
                 final View networkWarnConfirm = alertDialog.findViewById(R.id.network_warn_confirm);
+                final CompoundButton networkWarnConfirmCheck = ViewUtil.findViewByID(networkWarnConfirm, R.id.view_checkbox);
                 final View startOffline = alertDialog.findViewById(R.id.start_offline);
 
                 if (networkWarnTip == null
@@ -285,10 +287,12 @@ public class FunctionsActivity extends CommonActivity {
                     return;
                 }
 
+                networkWarnConfirmCheck.setChecked(networkWarnConfirm.isSelected());
                 networkWarnConfirm.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         v.setSelected(!v.isSelected());
+                        networkWarnConfirmCheck.setChecked(networkWarnConfirm.isSelected());
                         startOffline.setEnabled(v.isSelected());
                     }
                 });
