@@ -7,6 +7,7 @@ import com.idonans.offline.joke.JokeActivity;
 import com.idonans.offline.joke.JokeManager;
 import com.idonans.offline.news.NewsListActivity;
 import com.idonans.offline.news.NewsManager;
+import com.idonans.offline.share.sinaweibo.ShareSinaWeiboActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +54,7 @@ public class FunctionsManager {
         List<Function> functions = new ArrayList<>();
         functions.add(new JokeFunction());
         functions.add(new NewsListFunctions());
+        functions.add(new ShareSinaWeiboFunction());
 
         mFunctions = functions;
     }
@@ -179,6 +181,49 @@ public class FunctionsManager {
         @Override
         public void startActivity(Context context) {
             Intent intent = new Intent(context, NewsListActivity.class);
+            context.startActivity(intent);
+        }
+    }
+
+    /**
+     * Sina 微博登陆授权分享
+     */
+    private class ShareSinaWeiboFunction implements Function {
+
+        @Override
+        public boolean isLoading() {
+            return false;
+        }
+
+        /**
+         * 数据加载进度 [0f, 1f]
+         */
+        @Override
+        public float getLoadingProgress() {
+            return 0;
+        }
+
+        @Override
+        public long getOfflineTime() {
+            return 0;
+        }
+
+        @Override
+        public String getTitle() {
+            return "新浪微博授权分享";
+        }
+
+        @Override
+        public void startOffline() {
+        }
+
+        @Override
+        public void cancel() {
+        }
+
+        @Override
+        public void startActivity(Context context) {
+            Intent intent = new Intent(context, ShareSinaWeiboActivity.class);
             context.startActivity(intent);
         }
     }

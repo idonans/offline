@@ -21,7 +21,7 @@ public class ShareSinaWeibo {
 
     private static final String TAG = "ShareSinaWeibo";
     private final String mAppKey;
-    private final String mRedirectUrl = "";
+    private final String mRedirectUrl = "https://api.weibo.com/oauth2/default.html";
     private final String mScope = "";
 
     private final AuthInfo mAuthInfo;
@@ -31,21 +31,23 @@ public class ShareSinaWeibo {
         mAuthInfo = new AuthInfo(AppContext.getContext(), mAppKey, mRedirectUrl, mScope);
     }
 
-    public AuthHolder sso(Activity activity) {
+    public AuthHolder sso(Activity activity, AuthCallback authCallback) {
         SsoHandler ssoHandler = new SsoHandler(activity, mAuthInfo);
-        return new AuthHolder(ssoHandler);
+        return new AuthHolder(ssoHandler, authCallback);
     }
 
     public class AuthHolder {
         private final SsoHandler mSsoHandler;
+        private final WeiboAuthListener mWeiboAuthListener;
 
-        private AuthHolder(SsoHandler ssoHandler) {
+        private AuthHolder(SsoHandler ssoHandler, AuthCallback authCallback) {
             mSsoHandler = ssoHandler;
+            mWeiboAuthListener = new AuthCallbackAdapter(authCallback);
         }
 
-        public void auth(AuthCallback authCallback) {
+        public void auth() {
             if (mSsoHandler != null) {
-                mSsoHandler.authorize(new AuthCallbackAdapter(authCallback));
+                mSsoHandler.authorize(mWeiboAuthListener);
             }
         }
 
