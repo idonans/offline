@@ -29,7 +29,7 @@ public class ShareSinaWeiboActivity extends CommonActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.share_sina_weibo_activity);
 
-        mAuthHolder = new ShareSinaWeibo(APP_KEY).sso(this, new ShareSinaWeibo.AuthCallback() {
+        mAuthHolder = new ShareSinaWeibo(APP_KEY).sso(this, savedInstanceState, new ShareSinaWeibo.AuthCallback() {
             @Override
             public void onSuccess(@NonNull Oauth2AccessToken accessToken) {
                 CommonLog.d(TAG + " onSuccess " + accessToken.getToken());
@@ -57,6 +57,12 @@ public class ShareSinaWeiboActivity extends CommonActivity {
                 mAuthHolder.auth();
             }
         });
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mAuthHolder.onSaveInstanceState(outState);
     }
 
     private void showToast(String message) {

@@ -13,6 +13,8 @@ import com.sina.weibo.sdk.auth.WeiboAuthListener;
 import com.sina.weibo.sdk.auth.sso.SsoHandler;
 import com.sina.weibo.sdk.exception.WeiboException;
 
+import java.lang.reflect.Field;
+
 /**
  * 新浪微博 分享
  * Created by idonans on 16-5-9.
@@ -31,30 +33,63 @@ public class ShareSinaWeibo {
         mAuthInfo = new AuthInfo(AppContext.getContext(), mAppKey, mRedirectUrl, mScope);
     }
 
-    public AuthHolder sso(Activity activity, AuthCallback authCallback) {
+    public AuthHolder sso(Activity activity, Bundle savedInstanceState, AuthCallback authCallback) {
         SsoHandler ssoHandler = new SsoHandler(activity, mAuthInfo);
-        return new AuthHolder(ssoHandler, authCallback);
+        return new AuthHolder(savedInstanceState, ssoHandler, authCallback);
     }
 
     public class AuthHolder {
+        private static final String EXTRA_REQUEST_CODE_SINA_WEIBO_SSO_AUTH = "extra.REQUEST_CODE_SINA_WEIBO_SSO_AUTH";
         private final SsoHandler mSsoHandler;
         private final WeiboAuthListener mWeiboAuthListener;
 
-        private AuthHolder(SsoHandler ssoHandler, AuthCallback authCallback) {
+        private AuthHolder(Bundle savedInstanceState, SsoHandler ssoHandler, AuthCallback authCallback) {
             mSsoHandler = ssoHandler;
             mWeiboAuthListener = new AuthCallbackAdapter(authCallback);
+
+            // 恢复 mSSOAuthRequestCode 和 mAuthListener (如果当前进程被回收)
+            if (savedInstanceState != null) {
+                int code = savedInstanceState.getInt(EXTRA_REQUEST_CODE_SINA_WEIBO_SSO_AUTH, -1);
+                if (code != -1) {
+                    try {
+                        Field fRequestCode = SsoHandler.class.getDeclaredField("mSSOAuthRequestCode");
+                        fRequestCode.setAccessible(true);
+                        fRequestCode.setInt(mSsoHandler, code);
+                        CommonLog.d(TAG + " restore SsoHandler mSSOAuthRequestCode " + code);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        Field fAuthListener = SsoHandler.class.getDeclaredField("mAuthListener");
+                        fAuthListener.setAccessible(true);
+                        fAuthListener.set(mSsoHandler, mWeiboAuthListener);
+                        CommonLog.d(TAG + " restore SsoHandler mAuthListener");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
         }
 
         public void auth() {
-            if (mSsoHandler != null) {
-                mSsoHandler.authorize(mWeiboAuthListener);
+            mSsoHandler.authorize(mWeiboAuthListener);
+        }
+
+        public void onSaveInstanceState(Bundle outState) {
+            try {
+                Field fRequestCode = SsoHandler.class.getDeclaredField("mSSOAuthRequestCode");
+                fRequestCode.setAccessible(true);
+                int code = fRequestCode.getInt(mSsoHandler);
+                outState.putInt(EXTRA_REQUEST_CODE_SINA_WEIBO_SSO_AUTH, code);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
 
         public void onActivityResult(int requestCode, int resultCode, Intent data) {
-            if (mSsoHandler != null) {
-                mSsoHandler.authorizeCallBack(requestCode, resultCode, data);
-            }
+            mSsoHandler.authorizeCallBack(requestCode, resultCode, data);
         }
 
     }
