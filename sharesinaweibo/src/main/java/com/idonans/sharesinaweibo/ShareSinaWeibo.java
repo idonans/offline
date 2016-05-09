@@ -48,8 +48,7 @@ public class ShareSinaWeibo {
             mSsoHandler = ssoHandler;
             mWeiboAuthListener = new AuthCallbackAdapter(authCallback);
 
-            // TODO 新浪 SDK 实现中对进程被回收后的状态恢复处理不足，此处虽然尝试恢复中间数据，但是没有实际效果。
-            /*
+            // TODO 新浪微博 SDK 实现中对进程被回收后的状态恢复处理不足，此处虽然尝试恢复中间数据，但是对网页授权方式没有实际效果。 对 SSO 微博客户端授权有一定的修复效果。
             // 恢复 mSSOAuthRequestCode 和 mAuthListener (如果当前进程被回收)
             if (savedInstanceState != null) {
                 int code = savedInstanceState.getInt(EXTRA_REQUEST_CODE_SINA_WEIBO_SSO_AUTH, -1);
@@ -73,7 +72,6 @@ public class ShareSinaWeibo {
                     }
                 }
             }
-            */
 
         }
 
