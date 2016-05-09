@@ -16,7 +16,12 @@
 -->
 
 <resources>
-    <string name="com_sina_weibo_sdk_login_with_weibo_account">用微博登录</string>
-    <string name="com_sina_weibo_sdk_login">登录</string>
-    <string name="com_sina_weibo_sdk_logout">注销</string>
+    <!--
+        Base application theme for API 11+. This theme completely replaces
+        AppBaseTheme from res/values/styles.xml on API 11+ devices.
+    -->
+<!--     <style name="AppBaseTheme" parent="android:Theme.Holo.Light">
+        API 11 theme customizations can go here.
+    </style> -->
+
 </resources>
