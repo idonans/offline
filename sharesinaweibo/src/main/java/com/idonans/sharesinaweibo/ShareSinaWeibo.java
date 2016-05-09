@@ -44,6 +44,7 @@ public class ShareSinaWeibo {
         private final WeiboAuthListener mWeiboAuthListener;
 
         private AuthHolder(Bundle savedInstanceState, SsoHandler ssoHandler, AuthCallback authCallback) {
+            CommonLog.d(TAG + " init AuthHolder savedInstanceState " + ((savedInstanceState == null ? "not found" : "found")));
             mSsoHandler = ssoHandler;
             mWeiboAuthListener = new AuthCallbackAdapter(authCallback);
 
@@ -74,10 +75,12 @@ public class ShareSinaWeibo {
         }
 
         public void auth() {
+            CommonLog.d(TAG + " AuthHolder auth");
             mSsoHandler.authorize(mWeiboAuthListener);
         }
 
         public void onSaveInstanceState(Bundle outState) {
+            CommonLog.d(TAG + " AuthHolder onSaveInstanceState");
             try {
                 Field fRequestCode = SsoHandler.class.getDeclaredField("mSSOAuthRequestCode");
                 fRequestCode.setAccessible(true);
@@ -89,6 +92,7 @@ public class ShareSinaWeibo {
         }
 
         public void onActivityResult(int requestCode, int resultCode, Intent data) {
+            CommonLog.d(TAG + " AuthHolder onActivityResult requestCode " + requestCode + ", resultCode " + resultCode);
             mSsoHandler.authorizeCallBack(requestCode, resultCode, data);
         }
 
