@@ -5,12 +5,12 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.idonans.acommon.data.OkHttpManager;
 import com.idonans.acommon.data.StorageManager;
 import com.idonans.acommon.lang.Available;
 import com.idonans.acommon.lang.CommonLog;
 import com.idonans.acommon.lang.Threads;
 import com.idonans.acommon.util.AvailableUtil;
-import com.idonans.offline.data.HttpManager;
 import com.idonans.offline.rx.SubscriptionHolder;
 
 import java.lang.ref.WeakReference;
@@ -63,7 +63,7 @@ public class JokeManager {
     private JokeManager() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://japi.juhe.cn/")
-                .client(HttpManager.getInstance().getOkHttpClient())
+                .client(OkHttpManager.getInstance().getOkHttpClient())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();

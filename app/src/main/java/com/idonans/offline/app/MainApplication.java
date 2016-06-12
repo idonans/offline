@@ -3,7 +3,6 @@ package com.idonans.offline.app;
 import android.app.Application;
 
 import com.idonans.acommon.App;
-import com.idonans.offline.fresco.FrescoManager;
 import com.squareup.leakcanary.LeakCanary;
 
 /**
@@ -16,8 +15,9 @@ public class MainApplication extends Application {
     public void onCreate() {
         super.onCreate();
         LeakCanary.install(this);
-        App.init(this, new BuildConfigAdapterImpl());
-        FrescoManager.getInstance();
+        App.init(new App.Config()
+                .setContext(this)
+                .setBuildConfigAdapter(new BuildConfigAdapterImpl()));
     }
 
 }
