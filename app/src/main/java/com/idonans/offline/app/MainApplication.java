@@ -15,9 +15,10 @@ public class MainApplication extends Application {
     public void onCreate() {
         super.onCreate();
         LeakCanary.install(this);
-        App.init(new App.Config()
+        App.init(new App.Config.Builder()
                 .setContext(this)
-                .setBuildConfigAdapter(new BuildConfigAdapterImpl()));
+                .setBuildConfigAdapter(new BuildConfigAdapterImpl())
+                .build());
     }
 
 }
