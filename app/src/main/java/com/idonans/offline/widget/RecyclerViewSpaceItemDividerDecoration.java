@@ -6,7 +6,6 @@ import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.idonans.acommon.lang.CommonLog;
 import com.idonans.acommon.util.DimenUtil;
 
 /**
@@ -29,9 +28,8 @@ public class RecyclerViewSpaceItemDividerDecoration extends RecyclerView.ItemDec
     }
 
     public RecyclerViewSpaceItemDividerDecoration(int topArea, int bottomArea, int dividerSize, int dividerColor) {
-        if (dividerSize < 1) {
-            CommonLog.e(TAG + " divider size too small, change size to 1px");
-            dividerSize = 1;
+        if (dividerSize < 0) {
+            throw new IllegalArgumentException("divider size must >= 0");
         }
 
         mTopArea = topArea;
@@ -73,6 +71,11 @@ public class RecyclerViewSpaceItemDividerDecoration extends RecyclerView.ItemDec
 
     @Override
     public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+        if (mDividerSize <= 0) {
+            // ignore divider
+            return;
+        }
+
         int childCount = parent.getChildCount();
         if (childCount <= 1) {
             return;
