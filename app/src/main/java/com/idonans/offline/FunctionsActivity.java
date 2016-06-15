@@ -20,10 +20,10 @@ import com.idonans.acommon.lang.Threads;
 import com.idonans.acommon.lang.WeakAvailable;
 import com.idonans.acommon.util.NetUtil;
 import com.idonans.acommon.util.ViewUtil;
+import com.idonans.acommon.widget.RecyclerViewSpaceItemDividerDecoration;
 import com.idonans.offline.rx.SubscriptionHolder;
 import com.idonans.offline.util.IconFontUtil;
 import com.idonans.offline.util.ScrollHelper;
-import com.idonans.offline.widget.RecyclerViewSpaceItemDividerDecoration;
 
 import java.util.List;
 import java.util.Locale;

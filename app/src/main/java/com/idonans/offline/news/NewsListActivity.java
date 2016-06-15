@@ -20,12 +20,12 @@ import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.idonans.acommon.app.CommonActivity;
 import com.idonans.acommon.util.DimenUtil;
 import com.idonans.acommon.util.ViewUtil;
+import com.idonans.acommon.widget.RecyclerViewSpaceItemDividerDecoration;
 import com.idonans.offline.IconFontPath;
 import com.idonans.offline.R;
 import com.idonans.offline.rx.SubscriptionHolder;
 import com.idonans.offline.util.IconFontUtil;
 import com.idonans.offline.util.ScrollHelper;
-import com.idonans.offline.widget.RecyclerViewSpaceItemDividerDecoration;
 
 import java.util.List;
 import java.util.Locale;
