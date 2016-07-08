@@ -4,13 +4,13 @@ Properties keystoreProperties = new Properties()
 keystoreProperties.load(project.rootProject.file('keystore.properties').newDataInputStream())
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 24
+    buildToolsVersion "24.0.0"
 
     defaultConfig {
         applicationId "com.idonans.offline"
         minSdkVersion 16
-        targetSdkVersion 23
+        targetSdkVersion 24
         versionCode 2
         versionName "1.1.0"
     }
@@ -42,5 +42,5 @@ dependencies {
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
-    compile project(':sharesinaweibo')
+    compile 'com.idonans.acommon:acommon:0.1.18'
 }
